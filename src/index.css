@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+    --primary: #2D5A27;
+    --secondary: #E1AD01;
+    --tertiary: #3E2723;
+    --tertiary-light: #5D4037;
+    --offbg: #f3f4f6;
+}
+
+*{
+    transition: all .3s ease-in-out;
+    
+}
+/* 
+body {
+    padding: 0%;
+} */
