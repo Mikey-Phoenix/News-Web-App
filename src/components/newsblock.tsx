@@ -13,20 +13,20 @@ export default function NewsBlock({ title, description, imageUrl, story, isHot, 
                         )}
                         <div className="p-4">
                             <h2 className="text-2xl md:text-3xl font-bold mb-2">{title}</h2>
-                            <p className="text-gray-700 text-sm">{description}</p>
+                            <p className="text-gray-700 text-sm md:text-base">{description}</p>
                         </div>
                         <div className="text-gray-400 text-sm pl-4 pb-1 w-full">{date} | {location}</div>
                     </div>
                 
             ) : (
-                <div className="mb-2 flex flex-row md:flex-col items-center bg-white border-b mr-2 border-gray-400 overflow-hidden cursor-pointer " onClick={() => redirect(story)}>
+                <div className="mb-2 flex flex-row md:flex-col items-start md:items-center bg-white border-b mr-2 border-gray-400 overflow-hidden cursor-pointer " onClick={() => redirect(story)}>
                         {isHot && (
                             <img src={imageUrl} alt={title} className="w-[50%] md:w-full h-28 bg-gray-400 object-cover" />
                         )}
                         <div className="p-4 w-full ">
                             <h2 className="text-lg font-bold mb-2">{title}</h2>
                             {isHot && (
-                                <p className="text-gray-700 text-sm">{description}</p>
+                                <p className="text-gray-700 text-sm md:text-base">{description}</p>
                             )}
                         <div className="text-gray-400 md:pl-4 pb-1 w-full text-sm">{date} | {location}</div>
                         </div>

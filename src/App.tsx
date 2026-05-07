@@ -178,7 +178,7 @@ function Navbar() {
 
             <div className="w-fit absolute bottom-10">
               <div className="text-3xl font-bold">Logo</div>
-              <div className="flex items-center justify-between mt-3 space-x-6 text-md">
+              <div className="flex items-center justify-between mt-3 space-x-6 text-base">
                 <FaInstagram className="text-2xl cursor-pointer hover:text-[var(--secondary)]" />
                 <FaFacebook className="text-2xl cursor-pointer hover:text-[var(--secondary)]" />
                 <FaXTwitter className="text-2xl cursor-pointer hover:text-[var(--secondary)]" />
@@ -231,7 +231,7 @@ function Navbar() {
 
             <div className="w-fit absolute bottom-20">
               <div className="text-3xl font-bold">Logo</div>
-              <div className="flex items-center justify-between mt-3 space-x-6 text-md">
+              <div className="flex items-center justify-between mt-3 space-x-6 text-base">
                 <FaInstagram className="text-2xl cursor-pointer hover:text-[var(--secondary)]" onClick={() => redirect("/")}/>
                 <FaFacebook className="text-2xl cursor-pointer hover:text-[var(--secondary)]" onClick={() => redirect("/")}/>
                 <FaXTwitter className="text-2xl cursor-pointer hover:text-[var(--secondary)]" onClick={() => redirect("/")}/>

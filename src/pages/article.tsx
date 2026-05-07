@@ -14,7 +14,7 @@ function article(){
                         <p className="text-[var(--secondary)] italic">Sunday, 17th May, 2026. 11:00AM</p>
                         <div className="flex items-center space-x-4">
                             <p>Share <FaShareAlt className="inline" /></p>
-                            <button className="border p-1 rounded-md text-sm md:text-md">Add as Preferred on Google</button>
+                            <button className="border p-1 rounded-md text-sm md:text-base">Add as Preferred on Google</button>
                         </div>
                     </div>
                     <p className="font-bold mt-2">Authors</p>

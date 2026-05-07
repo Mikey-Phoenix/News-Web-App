@@ -24,7 +24,7 @@ export default function Footer () {
                 </div>
                 <div className="flex flex-row md:flex-col justify-between mt-5 md:mt-0">
                     <div className="bg-[var(--primary)] w-fit mt-5 md:mt-3 cursor-pointer p-2 rounded-md hover:bg-[var(--tertiary-light)] text-sm">Subscribe to newsletter</div>
-                    <div className="flex flex-col md:flex-row items-center justify-between mt-3 w-[50%] lg:w-[30%] text-md"><span className="w-full text-center md:text-left">Follow Logo on:</span>
+                    <div className="flex flex-col md:flex-row items-center justify-between mt-3 w-[50%] lg:w-[30%] text-base"><span className="w-full text-center md:text-left">Follow Logo on:</span>
                         <div className="flex justify-evenly w-full">
                             <FaInstagram className="text-lg md:text-2xl cursor-pointer hover:text-[var(--secondary)]" onClick={() => redirect("/")}/>
                             <FaFacebook className="text-lg md:text-2xl cursor-pointer hover:text-[var(--secondary)]" onClick={() => redirect("/")}/>

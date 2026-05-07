@@ -56,7 +56,7 @@ function weather() {
                 <div className="w-[49%] grid grid-cols-2 gap-2 md:gap-5">
                     <div className="h-[100px] col-span-2">
                         <div className="relative">
-                            <input className='border border-2 w-full h-10 rounded-md p-2 text-sm md:text-md border-[var(--tertiary)]' type="search" placeholder="Search States..." />
+                            <input className='border border-2 w-full h-10 rounded-md p-2 text-sm md:text-base border-[var(--tertiary)]' type="search" placeholder="Search States..." />
                             <IoMdSearch className="absolute top-[50%] right-0 text-white w-[30%] md:w-[10%] h-10 py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md" />
                         </div>
                     </div>
