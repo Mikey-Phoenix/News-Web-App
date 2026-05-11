@@ -14,7 +14,7 @@ export default function MoreNewsBlock({title, description, imageUrl, story, date
                         <p className="text-sm">{description}</p>
                         <p className="text-[var(--secondary)] italic text-sm">{location}, {date} | {time}</p>
                     </div>
-                    <img src={imageUrl} alt={title} className="h-[200px] min-h-200px min-w-[200px] rounded-md border" />
+                    <img src={imageUrl} alt={title} className="h-[200px] min-h-200px min-w-[200px] rounded-md" />
                 </div>
             </>
         )

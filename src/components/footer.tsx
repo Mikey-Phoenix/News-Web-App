@@ -9,7 +9,7 @@ import { redirect } from "react-router-dom";
 export default function Footer () {
     return (
         <>
-            <div className="w-full mt-24 md:mt-48 py-6 px-10 bg-[var(--tertiary)] text-white">
+            <div id="footer" className="w-full mt-24 md:mt-48 py-6 px-10 bg-[var(--tertiary)] text-white">
                 <h1 className="text-3xl md:text-5xl font-bold">Logo</h1>
                 <div className="grid grid-cols-3 gap-y-3 lg:flex justify-between lg:w-[50%] mt-5">
                     <a href="/" className="hover:text-[var(--secondary)]">Home</a>
