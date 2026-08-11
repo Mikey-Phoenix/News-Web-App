@@ -5,24 +5,47 @@ import { FaAngleRight } from "react-icons/fa6"
 import Footer from "../components/footer"
 import { useEffect } from "react"
 import { mapArticleToNewsBlock } from "../utils/mapArticleToNewsBlock"
+import Skeleton from 'react-loading-skeleton';
+import { AlertTrigger } from '../utils/alerts';
 
 function politics() {
 
-    const { scrape, results: results, loading, error } = useScraper();
+    const { scrape: scrapeNews, results: results, loading, error } = useScraper();
     
     useEffect(() => {
-        scrape('https://www.bbc.com/news');
+        scrapeNews('https://www.bbc.com/news');
     }, []);
 
 
-    if (loading) return <p>Scraping...</p>;
-    if (error) return <p style={{ color: 'red' }}>{error}</p>;
-    if (results.length === 0) return <p>No articles found.</p>;
+    if (loading) return (
+        <div className='flex flex-col md:flex-row gap-4 p-5'>
+            <div className='w-full order-1 md:order-2'>
+                <div className='bg-[#FAFAFA] space-x-4 p-5'>
+                    <Skeleton height={320} width="100%" />
+                    <Skeleton height={35} width="90%" className="mt-2" />
+                    <Skeleton height={20} width="35%" className="mt-2" />
+                </div>
+            </div>
 
+            <div className='md:w-1/3 order-2 md:order-3'>
+                <div className='bg-[#FAFAFA] space-x-4 p-5'>
+                    <Skeleton height={100} width="100%" />
+                    <Skeleton height={30} width="90%" className="mt-2" />
+                    <Skeleton height={20} width="35%" className="mt-2" />
+                </div>
+                <div className='bg-[#FAFAFA] space-x-4 mt-4 p-5'>
+                    <Skeleton height={100} width="100%" />
+                    <Skeleton height={30} width="90%" className="mt-2" />
+                    <Skeleton height={20} width="35%" className="mt-2" />
+                </div>
+            </div>
+        </div>
+    );
+    if (error) return <AlertTrigger show={!!error} title="Please Check Internet Connection" icon="warning" />;
+    if (results.length === 0) return <AlertTrigger show={!!error} title="There was a problem with the Server" icon="error" /> 
+    
     const filteredResults = results.filter((article) => 
-        !article.image?.includes('-60x') &&
-        article.image !== null &&
-        !article.image.includes('placeholder')
+        !article.image?.includes('-60x') 
     )
 
     const mappedArticles = filteredResults.map((article) => {

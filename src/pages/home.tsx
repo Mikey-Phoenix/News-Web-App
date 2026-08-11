@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useScraper, useSportScraper, useTechScraper, useHealthScraper, useBusinessScraper, useEntertainmentScraper, useVideoScraper } from '../hooks/useScraper';
+import Skeleton from 'react-loading-skeleton';
+import { useScraper, useSportScraper, useTechScraper, useHealthScraper, useBusinessScraper, useEntertainmentScraper } from '../hooks/useScraper'; 
+// , useVideoScraper
 import { mapArticleToNewsBlock } from '../utils/mapArticleToNewsBlock';
 // import { mapSportArticleToNewsBlock } from '../utils/mapArticleToNewsBlock';
 import NewsBlock from "../components/newsblock";
@@ -12,31 +14,78 @@ import { FaCloud } from "react-icons/fa";
 import { IoRainy } from "react-icons/io5";
 import { IoIosThunderstorm } from "react-icons/io";
 // import { FaAngleDoubleRight } from "react-icons/fa";
+import { AlertTrigger } from '../utils/alerts';
 import Footer from "../components/footer";
 
 function home() {
 
-    const { scrape, results, loading, error } = useScraper();
-    const { scrape: scrapeSport, results: sportResults } = useSportScraper();
-    const { scrape: scrapeTech, results: techResults } = useTechScraper();
-    const { scrape: scrapeHealth, results: healthResults } = useHealthScraper();
-    const { scrape: scrapeBusiness, results: businessResults } = useBusinessScraper();
-    const { scrape: scrapeEntertainment, results: entertainmentResults } = useEntertainmentScraper();
-    const { scrape: scrapeVideo, results: videoResults } = useVideoScraper();
+    const { scrape: scrapeNews, results, loading, error } = useScraper();
+    const { scrape: scrapeSport, results: sportResults, loading: sportLoading } = useSportScraper();
+    const { scrape: scrapeTech, results: techResults, loading: techLoading } = useTechScraper();
+    const { scrape: scrapeHealth, results: healthResults, loading: healthLoading } = useHealthScraper();
+    const { scrape: scrapeBusiness, results: businessResults, loading: businessLoading } = useBusinessScraper();
+    const { scrape: scrapeEntertainment, results: entertainmentResults, loading: entertainmentLoading } = useEntertainmentScraper();
+    // const { scrape: scrapeVideo, results: videoResults } = useVideoScraper();
 
     useEffect(() => {
-        scrape('https://www.bbc.com/news');  // 👈 Change this to any news URL you want to test
+        scrapeNews('https://www.bbc.com/news');  // 👈 Change this to any news URL you want to test
         scrapeSport('https://www.bbc.com/sport');
         scrapeTech('https://www.bbc.com/technology');
         scrapeHealth('https://www.bbc.com/health');
         scrapeBusiness('https://www.bbc.com/business');
         scrapeEntertainment('https://www.bbc.com/culture');
-        scrapeVideo('https://www.bbc.com/news/video_and_audio');
+        // scrapeVideo('https://www.bbc.com/news/video_and_audio');
     }, []);
 
-    if (loading) return <p>Scraping...</p>;
-    if (error) return <p style={{ color: 'red' }}>{error}</p>;
-    if (results.length === 0) return <p>No articles found.</p>;
+    // function error() {
+        
+    // }
+
+    if (loading) return (
+        <div className='flex flex-col md:flex-row gap-4 p-5'>
+            <div className='md:w-1/2 order-3 md:order-1'>
+                <div className='bg-[#FAFAFA] space-x-4 p-5'>
+                    <Skeleton height={20} width="90%" />
+                    <Skeleton height={20} width="75%" className="mt-2" />
+                    <Skeleton height={20} width="35%" className="mt-2" />
+                </div>
+                <div className='bg-[#FAFAFA] space-x-4 mt-4 p-5'>
+                    <Skeleton height={20} width="90%" />
+                    <Skeleton height={20} width="75%" className="mt-2" />
+                    <Skeleton height={20} width="35%" className="mt-2" />
+                </div>
+                <div className='bg-[#FAFAFA] space-x-4 mt-4 p-5'>
+                    <Skeleton height={20} width="90%" />
+                    <Skeleton height={20} width="75%" className="mt-2" />
+                    <Skeleton height={20} width="35%" className="mt-2" />
+                </div>
+                {/* <Skeleton count={3} /> */}
+            </div>
+
+            <div className='w-full order-1 md:order-2'>
+                <div className='bg-[#FAFAFA] space-x-4 p-5'>
+                    <Skeleton height={320} width="100%" />
+                    <Skeleton height={35} width="90%" className="mt-2" />
+                    <Skeleton height={20} width="35%" className="mt-2" />
+                </div>
+            </div>
+
+            <div className='md:w-1/2 order-2 md:order-3'>
+                <div className='bg-[#FAFAFA] space-x-4 p-5'>
+                    <Skeleton height={100} width="100%" />
+                    <Skeleton height={30} width="90%" className="mt-2" />
+                    <Skeleton height={20} width="35%" className="mt-2" />
+                </div>
+                <div className='bg-[#FAFAFA] space-x-4 mt-4 p-5'>
+                    <Skeleton height={100} width="100%" />
+                    <Skeleton height={30} width="90%" className="mt-2" />
+                    <Skeleton height={20} width="35%" className="mt-2" />
+                </div>
+            </div>
+        </div>
+    );
+    if (error) return <AlertTrigger show={!!error} title="Please Check Internet Connection" icon="warning" />;
+    if (results.length === 0) return <AlertTrigger show={!!error} title="There was a problem with the Server" icon="error" /> 
 
     const filteredResults = results.filter((article) => 
         !article.image?.includes('-60x')
@@ -112,14 +161,14 @@ function home() {
 
     const firstSportArticle = uniqueSportArticles[0];
 
-    const otherSportArticles = uniqueSportArticles
+    const otherSportArticles = firstSportArticle ? uniqueSportArticles
         .filter((article) => article.story !== firstSportArticle.story)
         // .filter((article) => !article.imageUrl?.includes('placeholder'))
-        .slice(0, 3);
+        .slice(0, 3) : [];
 
-    const shortSportArticles = uniqueSportArticles
+    const shortSportArticles = firstSportArticle ? uniqueSportArticles
         .filter((article) => article.story !== firstSportArticle.story)
-        .filter((article) => !otherSportArticles.some((other) => other.story === article.story))
+        .filter((article) => !otherSportArticles.some((other) => other.story === article.story)) : [];
 
 
     const mappedTechArticles = filteredTechResults.map((article) => {
@@ -137,10 +186,10 @@ function home() {
 
     const firstTechArticle = uniqueTechArticles[0];
 
-    const otherTechArticles = uniqueTechArticles
+    const otherTechArticles = firstTechArticle ? uniqueTechArticles
         .filter((article) => article.story !== firstTechArticle.story)
         // .filter((article) => !article.imageUrl?.includes('placeholder'))
-        .slice(0, 4);
+        .slice(0, 4) : [];
 
     const mappedHealthArticles = healthResults.map((article) => {
         const mapped = mapArticleToNewsBlock(article);
@@ -226,21 +275,27 @@ function home() {
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Sports<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
-            <div className="flex flex-col md:flex-row px-5 md:px-10 pt-3">
-                <div className="w-full mx-2 border-r border-gray-400">
-                    <NewsBlock title={firstSportArticle.title} description={firstSportArticle.description} imageUrl={firstSportArticle.imageUrl} story={firstSportArticle.story} isHot={firstSportArticle.isHot} isBig={firstSportArticle.isBig} date={firstSportArticle.date} location={firstSportArticle.location}/>
+            {sportLoading || !firstSportArticle ? (
+                <div className="flex flex-col md:flex-row px-5 md:px-10 pt-3">
+                    <Skeleton height={250} width="100%" />
                 </div>
-                <div className="w-full md:w-1/2 mx-2 grid grid-cols-2 md:grid-cols-1">
-                    {otherSportArticles.map((article, index) => (
-                        <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
-                    ))}
+            ) : (
+                <div className="flex flex-col md:flex-row px-5 md:px-10 pt-3">
+                    <div className="w-full mx-2 border-r border-gray-400">
+                        <NewsBlock title={firstSportArticle.title} description={firstSportArticle.description} imageUrl={firstSportArticle.imageUrl} story={firstSportArticle.story} isHot={firstSportArticle.isHot} isBig={firstSportArticle.isBig} date={firstSportArticle.date} location={firstSportArticle.location}/>
+                    </div>
+                    <div className="w-full md:w-1/2 mx-2 grid grid-cols-2 md:grid-cols-1">
+                        {otherSportArticles.map((article, index) => (
+                            <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
+                        ))}
+                    </div>
+                    <div className="hidden md:block md:w-1/2 mx-2 border-l border-gray-400">
+                        {shortSportArticles.map((article, index) => (
+                            <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
+                        ))}
+                    </div>
                 </div>
-                <div className="hidden md:block md:w-1/2 mx-2 border-l border-gray-400">
-                    {shortSportArticles.map((article, index) => (
-                        <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
-                    ))}
-                </div>
-            </div>
+            )}
 
             <button className="bg-[var(--tertiary)] cursor-pointer ml-4 mb-3 p-2 rounded-md hover:bg-[var(--tertiary-light)] text-white">View More</button>
 
@@ -289,11 +344,17 @@ function home() {
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Technology<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
-            <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 justify-evenly w-[90vw] mx-auto">
-                {otherTechArticles.map((article, index) => (
-                    <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={true} isBig={false} date={article.date} location={article.location}/>
-                ))}
-            </div>
+            {techLoading || !firstTechArticle ? (
+                <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 justify-evenly w-[90vw] mx-auto">
+                    <Skeleton height={200} width="100%" />
+                </div>
+            ) : (
+                <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 justify-evenly w-[90vw] mx-auto">
+                    {otherTechArticles.map((article, index) => (
+                        <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={true} isBig={false} date={article.date} location={article.location}/>
+                    ))}
+                </div>
+            )}
 
 
 
@@ -326,45 +387,63 @@ function home() {
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Health<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
-            <div className="flex flex-col md:grid md:grid-cols-1 lg:grid-cols-2 justify-evenly p-5 md:p-10">
-                {otherHealthArticles.map((article, index) => (
-                    <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={true} isBig={true} date={article.date} location={article.location}/>
-                ))}
-            </div>
+            {healthLoading ? (
+                <div className="flex flex-col md:grid md:grid-cols-1 lg:grid-cols-2 justify-evenly p-5 md:p-10">
+                    <Skeleton height={200} width="100%" />
+                </div>
+            ) : (
+                <div className="flex flex-col md:grid md:grid-cols-1 lg:grid-cols-2 justify-evenly p-5 md:p-10">
+                    {otherHealthArticles.map((article, index) => (
+                        <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={true} isBig={true} date={article.date} location={article.location}/>
+                    ))}
+                </div>
+            )}
 
 
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Business<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
-            <div className="w-[90vw] mx-auto grid grid-cols-3 gap-5">
-                <div className="border-r border-gray-400">
-                    {businessArticlesOne.map((article, index) => (
-                        <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
-                    ))}
+            {businessLoading ? (
+                <div className="w-[90vw] mx-auto grid grid-cols-3 gap-5">
+                    <Skeleton height={200} width="100%" />
                 </div>
-                <div className="border-r border-gray-400">
-                    {businessArticlesTwo.map((article, index) => (
-                        <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
-                    ))}
+            ) : (
+                <div className="w-[90vw] mx-auto grid grid-cols-3 gap-5">
+                    <div className="border-r border-gray-400">
+                        {businessArticlesOne.map((article, index) => (
+                            <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
+                        ))}
+                    </div>
+                    <div className="border-r border-gray-400">
+                        {businessArticlesTwo.map((article, index) => (
+                            <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
+                        ))}
 
-                </div>
-                <div className="border-r border-gray-400">
-                    {businessArticlesThree.map((article, index) => (
-                        <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
-                    ))}
+                    </div>
+                    <div className="border-r border-gray-400">
+                        {businessArticlesThree.map((article, index) => (
+                            <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
+                        ))}
 
+                    </div>
                 </div>
-            </div>
+            )}
 
 
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Entertainment<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
-            <div className="w-[90vw] mx-auto mt-4 mb-5 grid grid-cols-3 gap-5">
-                {uniqueEntertainmentArticles.slice(0, 3).map((article, index) => (
-                    <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
-                ))}
-            </div>
+            {entertainmentLoading ? (
+                <div className="w-[90vw] mx-auto mt-4 mb-5 grid grid-cols-3 gap-5">
+                    <Skeleton height={200} width="100%" />
+                </div>
+            ) : (
+                <div className="w-[90vw] mx-auto mt-4 mb-5 grid grid-cols-3 gap-5">
+                    {uniqueEntertainmentArticles.slice(0, 3).map((article, index) => (
+                        <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
+                    ))}
+                </div>
+            )}
 
 
             <Footer></Footer>

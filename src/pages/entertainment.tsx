@@ -6,6 +6,7 @@ import { FaAngleRight } from "react-icons/fa6"
 import Footer from "../components/footer"
 import { useEffect } from "react"
 import { mapArticleToNewsBlock } from "../utils/mapArticleToNewsBlock"
+import { AlertTrigger } from '../utils/alerts';
 
 function entertainment() {
 
@@ -21,9 +22,7 @@ function entertainment() {
     if (results.length === 0) return <p>No articles found.</p>;
 
     const filteredResults = results.filter((article) => 
-        !article.image?.includes('-60x') &&
-        article.image !== null &&
-        !article.image.includes('placeholder')
+        !article.image?.includes('-60x') 
     )
 
     const mappedArticles = filteredResults.map((article) => {

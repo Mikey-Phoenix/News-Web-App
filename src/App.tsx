@@ -18,6 +18,8 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FaTiktok } from "react-icons/fa";
 import { BiLogoGmail } from "react-icons/bi";
 import { useState, useEffect, useCallback } from 'react';
+import "react-loading-skeleton/dist/skeleton.css";
+import { SkeletonTheme } from 'react-loading-skeleton';
 
 
 // ── toggle hook (same file, no import needed) ──────────────────
@@ -246,19 +248,21 @@ function Navbar() {
       {/* Spacer to prevent content from hiding behind fixed navbar */}
       <div className={`transition-all duration-300 ${scrolled ? 'h-12' : 'h-24 md:h-36'}`} />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/hot" element={<Hot />} />
-        <Route path="/sports" element={<Sports />} />
-        <Route path="/weather" element={<Weather />} />
-        <Route path="/tech" element={<Tech />} />
-        <Route path="/politics" element={<Politics />} />
-        <Route path="/health" element={<Health />} />
-        <Route path="/business" element={<Business />} />
-        <Route path="/entertainment" element={<Entertainment />} />
-        <Route path="/article" element={<Article />} />
-      </Routes>
+      <SkeletonTheme baseColor="#EEEEEE" highlightColor="#F7F7F7">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/hot" element={<Hot />} />
+          <Route path="/sports" element={<Sports />} />
+          <Route path="/weather" element={<Weather />} />
+          <Route path="/tech" element={<Tech />} />
+          <Route path="/politics" element={<Politics />} />
+          <Route path="/health" element={<Health />} />
+          <Route path="/business" element={<Business />} />
+          <Route path="/entertainment" element={<Entertainment />} />
+          <Route path="/article" element={<Article />} />
+        </Routes>
+      </SkeletonTheme>
     </>
   )
 }

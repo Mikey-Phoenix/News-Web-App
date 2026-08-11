@@ -1,7 +1,20 @@
+function fixArticlePath(url: string): string {
+  let fixed = url;
 
+  // 1. Collapse any doubled segment: /sport/sport/ -> /sport/
+  fixed = fixed.replace(/\/([a-zA-Z0-9-]+)\/\1(?=\/|$)/, '/$1');
 
-function redirect(url:string){
-    window.location.href = url;
+  // 2. Strip a leading /news prefix, unless it's genuinely a /news/articles/... URL
+  fixed = fixed.replace(/^\/news\/(?!articles\/)/, '/');
+
+  return fixed;
+}
+
+function redirect(story:string){
+    const fixedStory = fixArticlePath(story);
+    window.location.href = `/article?story=${encodeURIComponent(fixedStory)}`;
+    console.log(encodeURIComponent(fixedStory));
+    console.log(fixedStory);
 }
 export default function NewsBlock({ title, description, imageUrl, story, isHot, isBig, date, location }: { title: string, description: string, imageUrl: string, story: string, isHot: boolean, isBig: boolean, date: string, location: string }) {
   return (
@@ -35,4 +48,3 @@ export default function NewsBlock({ title, description, imageUrl, story, isHot, 
         </>
     )
 }
-
