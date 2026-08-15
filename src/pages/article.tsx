@@ -5,6 +5,7 @@ import { FaShareAlt } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa6";
 import NewsBlock from "../components/newsblock";
 import MoreNewsBlock from "../components/morenewsblock";
+import { mapArticleToNewsBlock } from '../utils/mapArticleToNewsBlock';
 import Footer from "../components/footer";
 import { useScraper, useSportScraper, useTechScraper, useHealthScraper, useBusinessScraper, useEntertainmentScraper, useArticleScraper } from '../hooks/useScraper';
 
@@ -17,13 +18,26 @@ function article(){
     // console.log(story);
     // console.log('====================================');
 
-    // const { scrape: scrapeNews, results, loading, error } = useScraper();
-    // const { scrape: scrapeSport, results: sportResults, loading: sportLoading } = useSportScraper();
-    // const { scrape: scrapeTech, results: techResults, loading: techLoading } = useTechScraper();
-    // const { scrape: scrapeHealth, results: healthResults, loading: healthLoading } = useHealthScraper();
-    // const { scrape: scrapeBusiness, results: businessResults, loading: businessLoading } = useBusinessScraper();
-    // const { scrape: scrapeEntertainment, results: entertainmentResults, loading: entertainmentLoading } = useEntertainmentScraper();
+    const { scrape: scrapeNews, results, loading, error: newsError } = useScraper();
+    const { scrape: scrapeSport, results: sportResults, loading: sportLoading } = useSportScraper();
+    const { scrape: scrapeTech, results: techResults, loading: techLoading } = useTechScraper();
+    const { scrape: scrapeHealth, results: healthResults, loading: healthLoading } = useHealthScraper();
+    const { scrape: scrapeBusiness, results: businessResults, loading: businessLoading } = useBusinessScraper();
+    const { scrape: scrapeEntertainment, results: entertainmentResults, loading: entertainmentLoading } = useEntertainmentScraper();
     const { scrape: scrapeArticle, result: articleResult, loading: articleLoading, error } = useArticleScraper();
+
+    const BBC_CATEGORIES = ['/news', '/sport', '/technology', '/business', '/entertainment', '/health'];
+
+    function currentCategory(story: string): string | null {
+        for (const category of BBC_CATEGORIES) {
+            if (story.startsWith("https://www.bbc.com" + category)) {
+            return category;
+            }
+        }
+        return null;
+    }
+
+    const category = story ? currentCategory(story) : null;
 
     useEffect(() => {
         if (story && hasRunRef.current !== story) {
@@ -36,13 +50,63 @@ function article(){
             }
             console.log(articleResult)
         }
-        // scrapeNews('https://www.bbc.com/news');
-        // scrapeSport('https://www.bbc.com/sport');
-        // scrapeTech('https://www.bbc.com/technology');
-        // scrapeHealth('https://www.bbc.com/health');
-        // scrapeBusiness('https://www.bbc.com/business');
-        // scrapeEntertainment('https://www.bbc.com/culture');
     }, [story, articleResult]);
+
+    useEffect(() => {
+        switch (category) {
+            case '/news':
+                scrapeNews('https://www.bbc.com/news');
+                break;
+            case '/sport':
+                scrapeSport('https://www.bbc.com/sport');
+                break;
+            case '/technology':
+                scrapeTech('https://www.bbc.com/technology');
+                break;
+            case '/health':
+                scrapeHealth('https://www.bbc.com/health');
+                break;
+            case '/business':
+                scrapeBusiness('https://www.bbc.com/business');
+                break;
+            case '/entertainment':
+                scrapeEntertainment('https://www.bbc.com/culture');
+                break;
+        }
+    }, [category]); // only re-run when category actually changes
+
+    // let otherArticles;
+
+    useEffect(() => {
+        console.log(results);
+    }, [results]);
+    const filteredResults = results.filter((article) => 
+        !article.image?.includes('-60x')
+    );
+    const mappedArticles = filteredResults.map((article) => {
+        const mapped = mapArticleToNewsBlock(article);
+        return {
+                ...mapped,
+                isHot: article.image !== null,  // 👈 true if image exists, false if not
+            };
+        });
+    console.log("mapped results:", mappedArticles)
+    let uniqueArticles = mappedArticles.filter(
+        (article, index, self) =>
+        index === self.findIndex((a) => a.story === article.story)
+    );
+    console.log("unique results:", uniqueArticles)
+    const otherArticles = uniqueArticles
+    // .filter((article) => article.story !== articleResult.story || null)
+    // .filter((article) => !article.imageUrl?.includes('placeholder'))
+    .slice(0, 3);
+    console.log("other results:", otherArticles)
+    const shortArticles = uniqueArticles
+    // .filter((article) => article.story !== firstArticle.story)
+    .filter((article) => !otherArticles.some((other) => other.story === article.story))
+    .slice(0, 6);
+    console.log("short results:", shortArticles)
+
 
     function formatArticleDate(isoString: string): string {
         const date = new Date(isoString);
@@ -72,16 +136,16 @@ function article(){
         const minutesStr = minutes.toString().padStart(2, '0');
 
         return `${dayName}, ${getOrdinal(day)} ${monthName}, ${year}. ${hours}:${minutesStr}${ampm}`;
-        }
+    }
 
-        function formatArticleBody(rawBody: string): string[] {
-        return rawBody
-            .replace(/\\"/g, '"')      // unescape quotes
-            .replace(/\\n/g, '\n')     // in case \n is literal backslash-n too
-            .split(/\n\n+/)             // split into paragraphs
-            .map(p => p.trim())
-            .filter(p => p.length > 0); // remove empty paragraphs
-        }
+    function formatArticleBody(rawBody: string): string[] {
+    return rawBody
+        .replace(/\\"/g, '"')      // unescape quotes
+        .replace(/\\n/g, '\n')     // in case \n is literal backslash-n too
+        .split(/\n\n+/)             // split into paragraphs
+        .map(p => p.trim())
+        .filter(p => p.length > 0); // remove empty paragraphs
+    }
 
     return (
         <>
@@ -139,15 +203,19 @@ function article(){
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Related <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             <div className="w-[90vw] mx-auto mb-10 grid md:grid-cols-3 gap-5">
-                <div className="border-r border-gray-400">
-                    <NewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" isHot={true} isBig={false} date="17th May" location="Lagos" />
-                </div>
-                <div className="border-r border-gray-400">
-                    <NewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" isHot={true} isBig={false} date="17th May" location="Lagos" />
-                </div>
-                <div className="border-r border-gray-400">
-                    <NewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" isHot={true} isBig={false} date="17th May" location="Lagos" />
-                </div>
+                {otherArticles && otherArticles.length > 0 && otherArticles.map((article, index) => (
+                    <NewsBlock 
+                        key={index} 
+                        title={article.title} 
+                        description={article.description} 
+                        imageUrl={article.imageUrl} 
+                        story={article.story} 
+                        isHot={article.isHot} 
+                        isBig={false} 
+                        date={article.date} 
+                        location={article.location}
+                    />
+                ))}
             </div>
 
 
@@ -155,12 +223,10 @@ function article(){
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">You May Also Like <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             <div className="w-[90vw] mx-auto">
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
+                {shortArticles && shortArticles.length > 0 && shortArticles.map((article, index) => (
+                    <MoreNewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} date={article.date} location={article.location} time="" />
+                ))}
+
             </div>
 
             <Footer />

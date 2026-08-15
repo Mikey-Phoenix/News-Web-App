@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useScraper, useSportScraper, useTechScraper, useHealthScraper, useBusinessScraper, useEntertainmentScraper } from '../hooks/useScraper'; 
 // , useVideoScraper
@@ -17,6 +17,34 @@ import { IoIosThunderstorm } from "react-icons/io";
 import { AlertTrigger } from '../utils/alerts';
 import Footer from "../components/footer";
 
+
+function isPrevNewsEmpty(): boolean {
+    const raw = localStorage.getItem('prevNews');
+    if (!raw) return true; // key doesn't exist
+
+    try {
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return true;
+        // prevNews is an array of arrays — check if every sub-array is empty
+        return parsed.every((category) => Array.isArray(category) && category.length === 0);
+    } catch {
+        return true; // corrupted data, treat as empty
+    }
+}
+
+function getCachedNews(): any[] | null {
+    const raw = localStorage.getItem('prevNews');
+    if (!raw) return null;
+
+    try {
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return null;
+        return parsed;
+    } catch {
+        return null;
+    }
+}
+
 function home() {
 
     const { scrape: scrapeNews, results, loading, error } = useScraper();
@@ -27,8 +55,26 @@ function home() {
     const { scrape: scrapeEntertainment, results: entertainmentResults, loading: entertainmentLoading } = useEntertainmentScraper();
     // const { scrape: scrapeVideo, results: videoResults } = useVideoScraper();
 
+    const hasScraped = useRef(false);
+
+    const [cachedNews, setCachedNews] = useState<any[] | null>(null);
+    const [usingCache, setUsingCache] = useState(false);
+
     useEffect(() => {
-        scrapeNews('https://www.bbc.com/news');  // 👈 Change this to any news URL you want to test
+        if (hasScraped.current) return;
+        hasScraped.current = true;
+
+        // Only use the cache if prevNews exists AND actually has values
+        if (!isPrevNewsEmpty()) {
+            const cached = getCachedNews();
+            if (cached) {
+                setCachedNews(cached);
+                setUsingCache(true);
+                return; // skip scraping entirely
+            }
+        }
+
+        scrapeNews('https://www.bbc.com/news');
         scrapeSport('https://www.bbc.com/sport');
         scrapeTech('https://www.bbc.com/technology');
         scrapeHealth('https://www.bbc.com/health');
@@ -36,12 +82,11 @@ function home() {
         scrapeEntertainment('https://www.bbc.com/culture');
         // scrapeVideo('https://www.bbc.com/news/video_and_audio');
     }, []);
-
     // function error() {
         
     // }
 
-    if (loading) return (
+    if (!usingCache && loading) return (
         <div className='flex flex-col md:flex-row gap-4 p-5'>
             <div className='md:w-1/2 order-3 md:order-1'>
                 <div className='bg-[#FAFAFA] space-x-4 p-5'>
@@ -84,8 +129,8 @@ function home() {
             </div>
         </div>
     );
-    if (error) return <AlertTrigger show={!!error} title="Please Check Internet Connection" icon="warning" />;
-    if (results.length === 0) return <AlertTrigger show={!!error} title="There was a problem with the Server" icon="error" /> 
+    if (!usingCache && error) return <AlertTrigger show={!!error} title="Please Check Internet Connection" icon="warning" />;
+    if (!usingCache && results.length === 0) return <AlertTrigger show={!!error} title="There was a problem with the Server" icon="error" /> 
 
     const filteredResults = results.filter((article) => 
         !article.image?.includes('-60x')
@@ -102,62 +147,115 @@ function home() {
         !article.image.includes('placeholder')
     );
 
-    const mappedArticles = filteredResults.map((article) => {
+    // When using the cache, these arrays already contain mapped articles from a previous session,
+    // so we use them directly instead of re-mapping fresh scrape results.
+    const mappedArticles = usingCache && cachedNews ? (cachedNews[0] ?? []) : filteredResults.map((article) => {
         const mapped = mapArticleToNewsBlock(article);
         return {
                 ...mapped,
                 isHot: article.image !== null,  // 👈 true if image exists, false if not
             };
     });
-    
-
-    const uniqueArticles = mappedArticles.filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
-    );
-;
-    const firstArticle = uniqueArticles[0];
-
-    const otherArticles = uniqueArticles
-    .filter((article) => article.story !== firstArticle.story)
-    .filter((article) => !article.imageUrl?.includes('placeholder'))
-    .slice(0, 2);
-
-    const shortArticles = uniqueArticles
-    .filter((article) => article.story !== firstArticle.story)
-    .filter((article) => !otherArticles.some((other) => other.story === article.story))
-    .slice(0, 4);
-    const shortArticlesTwo = uniqueArticles
-    .filter((article) => article.story !== firstArticle.story)
-    .filter((article) => !otherArticles.some((other) => other.story === article.story))
-    .filter((article) => !shortArticles.some((short) => short.story === article.story))
-    .slice(0, 4);
-    const shortArticlesThree = uniqueArticles
-    .filter((article) => article.story !== firstArticle.story)
-    .filter((article) => !otherArticles.some((other) => other.story === article.story))
-    .filter((article) => !shortArticlesTwo.some((short) => short.story === article.story))
-    .slice(0, 4);
-    const shortArticlesExtra = uniqueArticles
-    .filter((article) => article.story !== firstArticle.story)
-    .filter((article) => !otherArticles.some((other) => other.story === article.story))
-    .filter((article) => !shortArticlesTwo.some((short) => short.story === article.story))
-    .filter((article) => !shortArticlesThree.some((short) => short.story === article.story))
-    .slice(0, 4);
-    const secondArticle = shortArticlesExtra[0]
-
-    
-    const mappedSportArticles = filteredSportResults.map((article) => {
+    const mappedSportArticles = usingCache && cachedNews ? (cachedNews[1] ?? []) : filteredSportResults.map((article) => {
         const mapped = mapArticleToNewsBlock(article);
         return {
             ...mapped,
             isHot: article.image !== null,
         };
     });
+    const mappedTechArticles = usingCache && cachedNews ? (cachedNews[2] ?? []) : filteredTechResults.map((article) => {
+        const mapped = mapArticleToNewsBlock(article);
+        return {
+            ...mapped,
+            isHot: article.image !== null,
+        };
+    });
+    const mappedHealthArticles = usingCache && cachedNews ? (cachedNews[3] ?? []) : healthResults.map((article) => {
+        const mapped = mapArticleToNewsBlock(article);
+        return {
+            ...mapped,
+            isHot: article.image !== null,
+        };
+    });
+    const mappedBusinessArticles = usingCache && cachedNews ? (cachedNews[4] ?? []) : businessResults.map((article) => {
+        const mapped = mapArticleToNewsBlock(article);
+        return {
+            ...mapped,
+            isHot: article.image !== null,
+        };
+    });
+    const mappedEntertainmentArticles = usingCache && cachedNews ? (cachedNews[5] ?? []) : entertainmentResults.map((article) => {
+        const mapped = mapArticleToNewsBlock(article);
+        return {
+                ...mapped,
+                isHot: article.image !== null,  // 👈 true if image exists, false if not
+            };
+    });
 
+
+    let prevNews = [mappedArticles, mappedSportArticles, mappedTechArticles, mappedHealthArticles, mappedBusinessArticles, mappedEntertainmentArticles];
+    localStorage.setItem('prevNews', JSON.stringify(prevNews));
+    let newsCheck = JSON.parse(localStorage.getItem('prevNews') || '[]');
+    console.log('====================================');
+    console.log(newsCheck);
+    console.log('====================================');
+    localStorage.removeItem('prevNews');
+
+
+    const uniqueArticles = mappedArticles.filter(
+        (article, index, self) =>
+            index === self.findIndex((a) => a.story === article.story)
+    );
     const uniqueSportArticles = mappedSportArticles.filter(
         (article, index, self) =>
             index === self.findIndex((a) => a.story === article.story)
     );
+    const uniqueTechArticles = mappedTechArticles.filter(
+        (article, index, self) =>
+            index === self.findIndex((a) => a.story === article.story)
+    );
+    const uniqueHealthArticles = mappedHealthArticles.filter(
+        (article, index, self) =>
+            index === self.findIndex((a) => a.story === article.story)
+    );
+    const uniqueBusinessArticles = mappedBusinessArticles.filter(
+        (article, index, self) =>
+            index === self.findIndex((a) => a.story === article.story)
+    );
+    const uniqueEntertainmentArticles = mappedEntertainmentArticles.filter(
+        (article, index, self) =>
+            index === self.findIndex((a) => a.story === article.story)
+    );
+
+    const firstArticle = uniqueArticles[0];
+
+    const otherArticles = firstArticle ? uniqueArticles
+        .filter((article) => article.story !== firstArticle.story)
+        .filter((article) => !article.imageUrl?.includes('placeholder'))
+        .slice(0, 2) : [];
+
+    const shortArticles = firstArticle ? uniqueArticles
+        .filter((article) => article.story !== firstArticle.story)
+        .filter((article) => !otherArticles.some((other) => other.story === article.story))
+        .slice(0, 4) : [];
+    const shortArticlesTwo = firstArticle ? uniqueArticles
+        .filter((article) => article.story !== firstArticle.story)
+        .filter((article) => !otherArticles.some((other) => other.story === article.story))
+        .filter((article) => !shortArticles.some((short) => short.story === article.story))
+        .slice(0, 4) : [];
+    const shortArticlesThree = firstArticle ? uniqueArticles
+        .filter((article) => article.story !== firstArticle.story)
+        .filter((article) => !otherArticles.some((other) => other.story === article.story))
+        .filter((article) => !shortArticlesTwo.some((short) => short.story === article.story))
+        .slice(0, 4) : [];
+    const shortArticlesExtra = firstArticle ? uniqueArticles
+        .filter((article) => article.story !== firstArticle.story)
+        .filter((article) => !otherArticles.some((other) => other.story === article.story))
+        .filter((article) => !shortArticlesTwo.some((short) => short.story === article.story))
+        .filter((article) => !shortArticlesThree.some((short) => short.story === article.story))
+        .slice(0, 4) : [];
+    const secondArticle = shortArticlesExtra[0];
+
 
     const firstSportArticle = uniqueSportArticles[0];
 
@@ -171,19 +269,6 @@ function home() {
         .filter((article) => !otherSportArticles.some((other) => other.story === article.story)) : [];
 
 
-    const mappedTechArticles = filteredTechResults.map((article) => {
-        const mapped = mapArticleToNewsBlock(article);
-        return {
-            ...mapped,
-            isHot: article.image !== null,
-        };
-    });
-
-    const uniqueTechArticles = mappedTechArticles.filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
-    );
-
     const firstTechArticle = uniqueTechArticles[0];
 
     const otherTechArticles = firstTechArticle ? uniqueTechArticles
@@ -191,51 +276,13 @@ function home() {
         // .filter((article) => !article.imageUrl?.includes('placeholder'))
         .slice(0, 4) : [];
 
-    const mappedHealthArticles = healthResults.map((article) => {
-        const mapped = mapArticleToNewsBlock(article);
-        return {
-            ...mapped,
-            isHot: article.image !== null,
-        };
-    });
-
-    const uniqueHealthArticles = mappedHealthArticles.filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
-    );
 
     const otherHealthArticles = uniqueHealthArticles.slice(0, 2);
-    
-    const mappedBusinessArticles = businessResults.map((article) => {
-        const mapped = mapArticleToNewsBlock(article);
-        return {
-            ...mapped,
-            isHot: article.image !== null,
-        };
-    });
 
-    const uniqueBusinessArticles = mappedBusinessArticles.filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
-    );
-    
+
     const businessArticlesOne = uniqueBusinessArticles.slice(0, 2);
     const businessArticlesTwo = uniqueBusinessArticles.slice(2, 4);
     const businessArticlesThree = uniqueBusinessArticles.slice(4, 6);
-
-
-    const mappedEntertainmentArticles = entertainmentResults.map((article) => {
-        const mapped = mapArticleToNewsBlock(article);
-        return {
-                ...mapped,
-                isHot: article.image !== null,  // 👈 true if image exists, false if not
-            };
-    });
-
-    const uniqueEntertainmentArticles = mappedEntertainmentArticles.filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
-    );
 
 
     return (
@@ -247,7 +294,9 @@ function home() {
                     ))}
                 </div>
                 <div className="w-full order-1 lg:order-2">
-                    <NewsBlock title={firstArticle.title} description={firstArticle.description} imageUrl={firstArticle.imageUrl} story={firstArticle.story} isHot={firstArticle.isHot} isBig={firstArticle.isBig} date={firstArticle.date} location={firstArticle.location}/>
+                    {firstArticle && (
+                        <NewsBlock title={firstArticle.title} description={firstArticle.description} imageUrl={firstArticle.imageUrl} story={firstArticle.story} isHot={firstArticle.isHot} isBig={firstArticle.isBig} date={firstArticle.date} location={firstArticle.location}/>
+                    )}
                 </div>
                 <div className="order-2 lg:order-3 grid md:grid-cols-2 lg:grid-cols-1 lg:w-1/2">
                     {otherArticles.map((article, index) => (
@@ -275,7 +324,7 @@ function home() {
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Sports<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
-            {sportLoading || !firstSportArticle ? (
+            {(!usingCache && sportLoading) || !firstSportArticle ? (
                 <div className="flex flex-col md:flex-row px-5 md:px-10 pt-3">
                     <Skeleton height={250} width="100%" />
                 </div>
@@ -344,7 +393,7 @@ function home() {
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Technology<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
-            {techLoading || !firstTechArticle ? (
+            {(!usingCache && techLoading) || !firstTechArticle ? (
                 <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 justify-evenly w-[90vw] mx-auto">
                     <Skeleton height={200} width="100%" />
                 </div>
@@ -379,7 +428,9 @@ function home() {
                     </div>
                 </div>
                 <div className="md:w-1/2 mt-4 md:mt-0">
-                    <NewsBlock title={secondArticle.title} description={secondArticle.description} imageUrl={secondArticle.imageUrl} story={secondArticle.story} isHot={secondArticle.isHot} isBig={secondArticle.isBig} date={secondArticle.date} location={secondArticle.location}/>
+                    {secondArticle && (
+                        <NewsBlock title={secondArticle.title} description={secondArticle.description} imageUrl={secondArticle.imageUrl} story={secondArticle.story} isHot={secondArticle.isHot} isBig={secondArticle.isBig} date={secondArticle.date} location={secondArticle.location}/>
+                    )}
                 </div>
             </div>
 
@@ -387,7 +438,7 @@ function home() {
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Health<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
-            {healthLoading ? (
+            {!usingCache && healthLoading ? (
                 <div className="flex flex-col md:grid md:grid-cols-1 lg:grid-cols-2 justify-evenly p-5 md:p-10">
                     <Skeleton height={200} width="100%" />
                 </div>
@@ -403,7 +454,7 @@ function home() {
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Business<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
-            {businessLoading ? (
+            {!usingCache && businessLoading ? (
                 <div className="w-[90vw] mx-auto grid grid-cols-3 gap-5">
                     <Skeleton height={200} width="100%" />
                 </div>
@@ -433,7 +484,7 @@ function home() {
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Entertainment<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
-            {entertainmentLoading ? (
+            {!usingCache && entertainmentLoading ? (
                 <div className="w-[90vw] mx-auto mt-4 mb-5 grid grid-cols-3 gap-5">
                     <Skeleton height={200} width="100%" />
                 </div>
