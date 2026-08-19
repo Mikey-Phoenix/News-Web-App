@@ -3,20 +3,46 @@ import MoreNewsBlock from "../components/morenewsblock"
 import { useBusinessScraper } from "../hooks/useScraper"
 import { FaAngleRight } from "react-icons/fa6"
 import Footer from "../components/footer"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { mapArticleToNewsBlock } from "../utils/mapArticleToNewsBlock"
 import { AlertTrigger } from '../utils/alerts';
+import Skeleton from "react-loading-skeleton";
 
 function business() {
 
     const { scrape, results: results, loading, error } = useBusinessScraper();
                 
+    const hasScraped = useRef(false);
     useEffect(() => {
+        if (hasScraped.current) return;
+            hasScraped.current = true;
         scrape('https://www.bbc.com/business');
     }, []);
 
 
-    if (loading) return <p>Scraping...</p>;
+    if (loading) return <p>
+            <div className='w-[95%] h-full flex flex-col md:flex-row gap-4 my-10 mx-auto'>
+                <div className='w-full h-full bg-[#FAFAFA] space-x-4 p-5'>
+                    <Skeleton height={150} width="100%" />
+                    <Skeleton height={70} width="90%" className="mt-2" />
+                    <Skeleton height={50} width="35%" className="mt-2" />
+                </div>
+                <div className='w-full bg-[#FAFAFA] space-x-4 mt-4 p-5'>
+                    <Skeleton height={150} width="100%" />
+                    <Skeleton height={70} width="90%" className="mt-2" />
+                    <Skeleton height={50} width="35%" className="mt-2" />
+                </div>
+                <div className='w-full h-full bg-[#FAFAFA] space-x-4 p-5'>
+                    <Skeleton height={150} width="100%" />
+                    <Skeleton height={70} width="90%" className="mt-2" />
+                    <Skeleton height={50} width="35%" className="mt-2" />
+                </div>
+                <div className='w-full h-full bg-[#FAFAFA] space-x-4 mt-4 p-5'>
+                    <Skeleton height={150} width="100%" />
+                    <Skeleton height={70} width="90%" className="mt-2" />
+                    <Skeleton height={50} width="35%" className="mt-2" />
+                </div>
+        </div></p>;
     if (error) return <p style={{ color: 'red' }}>{error}</p>;
     if (results.length === 0) return <p>No articles found.</p>;
 

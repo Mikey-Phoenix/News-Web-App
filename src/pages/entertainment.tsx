@@ -4,7 +4,7 @@ import { useEntertainmentScraper } from "../hooks/useScraper"
 import VideoBlock from "../components/videoblock"
 import { FaAngleRight } from "react-icons/fa6"
 import Footer from "../components/footer"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { mapArticleToNewsBlock } from "../utils/mapArticleToNewsBlock"
 import { AlertTrigger } from '../utils/alerts';
 
@@ -12,7 +12,10 @@ function entertainment() {
 
     const { scrape, results: results, loading, error } = useEntertainmentScraper();
                 
+    const hasScraped = useRef(false);
     useEffect(() => {
+        if (hasScraped.current) return;
+            hasScraped.current = true;
         scrape('https://www.bbc.com/culture');
     }, []);
 

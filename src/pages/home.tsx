@@ -64,16 +64,17 @@ function home() {
         if (hasScraped.current) return;
         hasScraped.current = true;
 
-        // Only use the cache if prevNews exists AND actually has values
+        // If cache exists, load it immediately so the page has something to show
+        // while the fresh scrape runs in the background.
         if (!isPrevNewsEmpty()) {
             const cached = getCachedNews();
             if (cached) {
                 setCachedNews(cached);
                 setUsingCache(true);
-                return; // skip scraping entirely
             }
         }
 
+        // Always scrape, regardless of whether cache exists
         scrapeNews('https://www.bbc.com/news');
         scrapeSport('https://www.bbc.com/sport');
         scrapeTech('https://www.bbc.com/technology');
@@ -82,9 +83,11 @@ function home() {
         scrapeEntertainment('https://www.bbc.com/culture');
         // scrapeVideo('https://www.bbc.com/news/video_and_audio');
     }, []);
-    // function error() {
-        
-    // }
+    useEffect(() => {
+        if (usingCache && results.length > 0) {
+            setUsingCache(false); // fresh data has arrived, stop showing cache
+        }
+    }, [results, usingCache]);
 
     if (!usingCache && loading) return (
         <div className='flex flex-col md:flex-row gap-4 p-5'>
@@ -196,10 +199,7 @@ function home() {
     let prevNews = [mappedArticles, mappedSportArticles, mappedTechArticles, mappedHealthArticles, mappedBusinessArticles, mappedEntertainmentArticles];
     localStorage.setItem('prevNews', JSON.stringify(prevNews));
     let newsCheck = JSON.parse(localStorage.getItem('prevNews') || '[]');
-    console.log('====================================');
-    console.log(newsCheck);
-    console.log('====================================');
-    localStorage.removeItem('prevNews');
+   // localStorage.removeItem('prevNews');
 
 
     const uniqueArticles = mappedArticles.filter(
@@ -284,6 +284,46 @@ function home() {
     const businessArticlesTwo = uniqueBusinessArticles.slice(2, 4);
     const businessArticlesThree = uniqueBusinessArticles.slice(4, 6);
 
+
+    function updatePrevNewsIfChanged(
+        mappedArticles: any[],
+        mappedSportArticles: any[],
+        mappedTechArticles: any[],
+        mappedHealthArticles: any[],
+        mappedBusinessArticles: any[],
+        mappedEntertainmentArticles: any[]
+    ): void {
+        const latestNews = [
+            mappedArticles,
+            mappedSportArticles,
+            mappedTechArticles,
+            mappedHealthArticles,
+            mappedBusinessArticles,
+            mappedEntertainmentArticles
+        ];
+
+        const latestNewsString = JSON.stringify(latestNews);
+        const currentPrevNews = localStorage.getItem('prevNews');
+
+        if (currentPrevNews !== latestNewsString) {
+            localStorage.setItem('prevNews', latestNewsString);
+            console.log('====================================');
+            console.log("The new prevNews");
+            console.log(localStorage.getItem('prevNews'));
+            console.log('====================================');
+        } else {
+            console.log("No new articles");
+        }
+    }
+
+    updatePrevNewsIfChanged(
+        mappedArticles,
+        mappedSportArticles,
+        mappedTechArticles,
+        mappedHealthArticles,
+        mappedBusinessArticles,
+        mappedEntertainmentArticles
+    );
 
     return (
         <>

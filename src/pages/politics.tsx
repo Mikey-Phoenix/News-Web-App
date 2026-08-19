@@ -3,7 +3,7 @@ import MoreNewsBlock from "../components/morenewsblock"
 import { useScraper } from "../hooks/useScraper"
 import { FaAngleRight } from "react-icons/fa6"
 import Footer from "../components/footer"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { mapArticleToNewsBlock } from "../utils/mapArticleToNewsBlock"
 import Skeleton from 'react-loading-skeleton';
 import { AlertTrigger } from '../utils/alerts';
@@ -12,7 +12,10 @@ function politics() {
 
     const { scrape: scrapeNews, results: results, loading, error } = useScraper();
     
+    const hasScraped = useRef(false);
     useEffect(() => {
+        if (hasScraped.current) return;
+            hasScraped.current = true;
         scrapeNews('https://www.bbc.com/news');
     }, []);
 

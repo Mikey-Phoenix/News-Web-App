@@ -3,7 +3,7 @@ import MoreNewsBlock from "../components/morenewsblock"
 import { useHealthScraper } from "../hooks/useScraper"
 import { FaAngleRight } from "react-icons/fa6"
 import Footer from "../components/footer"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { mapArticleToNewsBlock } from "../utils/mapArticleToNewsBlock"
 // import article from "./article"
 import Skeleton from 'react-loading-skeleton';
@@ -13,7 +13,10 @@ function health() {
 
     const { scrape, results: results, loading, error } = useHealthScraper();
             
+    const hasScraped = useRef(false);
     useEffect(() => {
+        if (hasScraped.current) return;
+            hasScraped.current = true;
         scrape('https://www.bbc.com/health');
     }, []);
 
@@ -63,29 +66,34 @@ function health() {
                 isHot: article.image !== null,  // 👈 true if image exists, false if not
             };
     });
+    // console.log('====================================');
+    // console.log(mappedArticles);
+    // console.log('====================================');
 
+    // const uniqueArticles = mappedArticles.filter(
+    //     (article, index, self) =>
+    //         index === self.findIndex((a) => a.story === article.story)
+    // )
     const uniqueArticles = mappedArticles
-    .filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
-    )
-    .filter((article) => article.imageUrl !== null);
+    // console.log("unique articles")
+    // console.log(uniqueArticles)
+    // .filter((article) => article.imageUrl !== null);
+
 
     const moreArticles = uniqueArticles
-    .filter((article) => article.story !== uniqueArticles[0].story)
-    .filter((article) => article.story !== uniqueArticles[1].story)
-    .filter((article) => article.story !== uniqueArticles[2].story)
+    .filter((article) => article.title !== uniqueArticles[0].title)
+    .filter((article) => article.title !== uniqueArticles[1].title)
+    .filter((article) => article.title !== uniqueArticles[2].title)
     .slice(0, 9);
 
     const lastArticles = mappedArticles
-    .filter((article) => article.story !== uniqueArticles[0].story)
-    .filter((article) => article.story !== uniqueArticles[1].story)
-    .filter((article) => article.story !== uniqueArticles[2].story)
+    .filter((article) => article.title !== uniqueArticles[0].title)
+    .filter((article) => article.title !== uniqueArticles[1].title)
+    .filter((article) => article.title !== uniqueArticles[2].title)
     .filter((article) => !moreArticles.some((other) => other.title === article.title))
     .slice(0, 4)
 
-    console.log("unique articles")
-    console.log(uniqueArticles)
+    
 
     return (
         <>

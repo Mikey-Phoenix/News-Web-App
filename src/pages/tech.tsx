@@ -1,23 +1,39 @@
 import NewsBlock from "../components/newsblock"
+import Skeleton from 'react-loading-skeleton';
 import MoreNewsBlock from "../components/morenewsblock"
 import { useTechScraper } from "../hooks/useScraper"
 import { FaAngleRight } from "react-icons/fa6"
 import Footer from "../components/footer"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { mapArticleToNewsBlock } from "../utils/mapArticleToNewsBlock"
 import { AlertTrigger } from '../utils/alerts';
 
 function tech() {
     const { scrape, results: results, loading, error } = useTechScraper();
         
+    const hasScraped = useRef(false);
     useEffect(() => {
+        if (hasScraped.current) return;
+            hasScraped.current = true;
         scrape('https://www.bbc.com/technology');
     }, []);
 
 
-    if (loading) return <p>Scraping...</p>;
-    if (error) return <p style={{ color: 'red' }}>{error}</p>;
-    if (results.length === 0) return <p>No articles found.</p>;
+    if (loading) return 
+        <p> <div className='w-[100vw] h-[100vh] flex flex-col md:flex-row gap-4 my-10 mx-auto'>
+            <div className='bg-[#FAFAFA] space-x-4 p-5'>
+                <Skeleton height={320} width="100%" />
+                <Skeleton height={35} width="90%" className="mt-2" />
+                <Skeleton height={20} width="35%" className="mt-2" />
+            </div>
+            <div className='bg-[#FAFAFA] space-x-4 p-5'>
+                <Skeleton height={320} width="100%" />
+                <Skeleton height={35} width="90%" className="mt-2" />
+                <Skeleton height={20} width="35%" className="mt-2" />
+            </div>
+        </div></p>
+    if (error) return <AlertTrigger show={!!error} title="Please Check Internet Connection" icon="warning" />;
+    if (results.length === 0) return <p> <AlertTrigger show={!!error} title="There was a problem with the Server" icon="error" /></p>;
 
     const filteredResults = results.filter((article) => 
         !article.image?.includes('-60x') 
@@ -34,26 +50,26 @@ function tech() {
     const uniqueArticles = mappedArticles
     .filter(
         (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
+            index === self.findIndex((a) => a.title === article.title)
     )
     .filter((article) => article.imageUrl !== null);
 
     const moreArticles = uniqueArticles
-    .filter((article) => article.story !== uniqueArticles[0].story)
-    .filter((article) => article.story !== uniqueArticles[1].story)
-    .filter((article) => article.story !== uniqueArticles[2].story)
-    .filter((article) => article.story !== uniqueArticles[3].story)
-    .filter((article) => article.story !== uniqueArticles[4].story)
-    .filter((article) => article.story !== uniqueArticles[5].story)
+    .filter((article) => article.title !== uniqueArticles[0].title)
+    .filter((article) => article.title !== uniqueArticles[1].title)
+    .filter((article) => article.title !== uniqueArticles[2].title)
+    .filter((article) => article.title !== uniqueArticles[3].title)
+    .filter((article) => article.title !== uniqueArticles[4].title)
+    .filter((article) => article.title !== uniqueArticles[5].title)
     .slice(0, 6);
 
     const lastArticles = mappedArticles
-    .filter((article) => article.story !== uniqueArticles[0].story)
-    .filter((article) => article.story !== uniqueArticles[1].story)
-    .filter((article) => article.story !== uniqueArticles[2].story)
-    .filter((article) => article.story !== uniqueArticles[3].story)
-    .filter((article) => article.story !== uniqueArticles[4].story)
-    .filter((article) => article.story !== uniqueArticles[5].story)
+    .filter((article) => article.title !== uniqueArticles[0].title)
+    .filter((article) => article.title !== uniqueArticles[1].title)
+    .filter((article) => article.title !== uniqueArticles[2].title)
+    .filter((article) => article.title !== uniqueArticles[3].title)
+    .filter((article) => article.title !== uniqueArticles[4].title)
+    .filter((article) => article.title !== uniqueArticles[5].title)
     .filter((article) => !moreArticles.some((other) => other.title === article.title))
     .slice(0, 4)
 

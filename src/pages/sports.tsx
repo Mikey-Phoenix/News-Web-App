@@ -3,7 +3,7 @@ import MoreNewsBlock from "../components/morenewsblock"
 import { useSportScraper } from "../hooks/useScraper"
 import { FaAngleRight } from "react-icons/fa6"
 import Footer from "../components/footer"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 // import article from "./article"
 import { mapArticleToNewsBlock } from "../utils/mapArticleToNewsBlock"
 import Skeleton from 'react-loading-skeleton';
@@ -13,8 +13,11 @@ import { AlertTrigger } from '../utils/alerts';
 function sports() {
 
     const { scrape, results: results, loading, error } = useSportScraper();
-
+    const hasScraped = useRef(false);
+    
     useEffect(() => {
+        if (hasScraped.current) return;
+        hasScraped.current = true;
         scrape('https://www.bbc.com/sport');
     }, []);
 
