@@ -129,7 +129,7 @@ const scrapeNews = async (url: string): Promise<NewsArticle[]> => {
     const description = clean(container.find('p[data-testid="card-description"]').first().text());
     const href = container.find('a[data-testid="internal-link"]').first().attr('href') || '';
     const articleUrl = href.startsWith('http') ? href : `${baseUrl}${href}`;
-    const image = getImage(container.find('div[data-testid="card-media"] > div > img').first());
+    const image = getImage(container.find('div[data-testid="card-media"] > div > div > img').first());
     const date = clean(container.find('[data-testid="card-metadata-lastupdated"]').first().text()) || null;
     const tag = clean(container.find('[data-testid="card-metadata-tag"]').first().text()) || null;
 
@@ -220,7 +220,7 @@ const scrapeTech = async (url: string): Promise<NewsArticle[]> => {
     const articleUrl = href.startsWith('http') ? href : `${baseUrl}${href}`;
     const title = clean(container.find('[data-testid="card-headline"]').first().text());
     const description = clean(container.find('[data-testid="card-description"]').first().text());
-    const image = getImage(container.find('div[data-testid="card-media"] > div > img').first());
+    const image = getImage(container.find('div[data-testid="card-media"] > div > div > img').first());
     const date = clean(container.find('[data-testid="card-metadata-lastupdated"]').first().text()) || null;
     const tag = clean(container.find('[data-testid="card-metadata-tag"]').first().text()) || null;
 
@@ -262,7 +262,7 @@ const scrapeHealth = async (url: string): Promise<NewsArticle[]> => {
     const description = clean(container.find('[data-testid="card-description"]').first().text());
 
     // Image — img with classes sc-5340b511-0 and hLdNfA
-    const image = getImage(container.find('div[data-testid="card-media"] > div > img').first());
+    const image = getImage(container.find('div[data-testid="card-media"] > div > div > img').first());
 
     // Tag and date — not present in this card structure
     const tag: string | null = null;
@@ -302,7 +302,7 @@ const scrapeBusiness = async (url: string): Promise<NewsArticle[]> => {
     const description = clean(container.find('[data-testid="card-description"]').first().text());
 
     // Image — img with classes sc-5340b511-0 and hLdNfA
-    const image = getImage(container.find('div[data-testid="card-media"] > div > img').first());
+    const image = getImage(container.find('div[data-testid="card-media"] > div > div > img').first());
 
     // Date — data-testid="card-metadata-lastupdated"
     const date = clean(
@@ -348,7 +348,7 @@ const scrapeEntertainment = async (url: string): Promise<NewsArticle[]> => {
     const description = clean(container.find('[data-testid="card-description"]').first().text());
 
     // Image — img with classes sc-5340b511-0 and hLdNfA
-    const image = getImage(container.find('div[data-testid="card-media"] > div > img').first());
+    const image = getImage(container.find('div[data-testid="card-media"] > div > div > img').first());
 
     // Date — data-testid="card-metadata-lastupdated"
     const date = clean(

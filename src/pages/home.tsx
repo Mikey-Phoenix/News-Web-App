@@ -19,6 +19,7 @@ import Footer from "../components/footer";
 
 
 function isPrevNewsEmpty(): boolean {
+    // localStorage.removeItem('prevNews')
     const raw = localStorage.getItem('prevNews');
     if (!raw) return true; // key doesn't exist
 

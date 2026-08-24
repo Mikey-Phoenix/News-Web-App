@@ -9,6 +9,7 @@ import Politics from "./pages/politics"
 import Hot from "./pages/hot"
 import Weather from "./pages/weather"
 import Article from "./pages/article"
+import Search from "./pages/search"
 import { IoMdSearch } from "react-icons/io";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoClose } from "react-icons/io5";
@@ -28,7 +29,29 @@ function useToggle(initial: boolean = false) {
   const toggle = useCallback(() => setIsOn(v => !v), []);
   return { isOn, toggle };
 }
+// interface GridItem {
+//     title: string;
+//     description: string; // or whatever text field you're filtering on
+//     // ...other fields
+// }
+
+// interface FilterableGridProps {
+//     items: GridItem[];
+// }
+
+// function FilterableGrid({ items }: FilterableGridProps) {
+//     const [searchTerm, setSearchTerm] = useState('');
+
+//     const filteredItems = items.filter((item) =>
+//         item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//         item.description.toLowerCase().includes(searchTerm.toLowerCase())
+//     );
+//   };
 // ───────────────────────────────────────────────────────────────
+
+function setSearchTerm (item:any) {
+  localStorage.setItem('SearchParam', item.toLowerCase())
+}
 
 function Navbar() {
   const location = useLocation()
@@ -84,8 +107,8 @@ function Navbar() {
         {screenSize ? (
           <div className={`w-full flex justify-between items-center space-x-4 px-4 overflow-hidden transition-all duration-300 ease-in-out ${scrolled ? 'max-h-0 py-0 opacity-0' : 'max-h-24 py-4 opacity-100'}`}>
             <div className="hidden md:block relative">
-              <input className='border border-2 rounded-md p-2 border-[var(--tertiary)]' type="search" placeholder="Search..." />
-              <IoMdSearch className="absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md" />
+              <input className='border border-2 rounded-md p-2 border-[var(--tertiary)]' type="search" placeholder="Search..." onChange={(e) => setSearchTerm(e.target.value)}/>
+              <IoMdSearch className="absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md" onClick={()=>{window.location.href = "/search"}} />
             </div>
             <div className="text-3xl md:text-5xl font-bold">Logo</div>
 
@@ -102,8 +125,8 @@ function Navbar() {
           ) : (
             <div className={`w-full flex justify-between items-center space-x-4 px-4 overflow-hidden transition-all duration-300 ease-in-out max-h-24 py-4 opacity-100`}>
               <div className="hidden md:block relative">
-                <input className='border border-2 rounded-md p-2 border-[var(--tertiary)]' type="search" placeholder="Search..." />
-                <IoMdSearch className="absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md" />
+                <input className='border border-2 rounded-md p-2 border-[var(--tertiary)]' type="search" placeholder="Search..." onChange={(e) => setSearchTerm(e.target.value)}/>
+                <IoMdSearch className="absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md" onClick={()=>{window.location.href = "/search"}} />
               </div>
               <div className="text-3xl md:text-5xl font-bold">Logo</div>
 
@@ -261,6 +284,7 @@ function Navbar() {
           <Route path="/business" element={<Business />} />
           <Route path="/entertainment" element={<Entertainment />} />
           <Route path="/article" element={<Article />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </SkeletonTheme>
     </>

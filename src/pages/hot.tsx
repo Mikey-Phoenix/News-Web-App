@@ -4,30 +4,51 @@ import { FaAngleRight } from "react-icons/fa6"
 import Footer from "../components/footer"
 
 function hot() {
+
+    // console.log(JSON.parse(localStorage.getItem("prevNews")))
+    let prevNews = JSON.parse(localStorage.getItem("prevNews") || "[]");
+    if (prevNews.length === 0) {
+        window.location.href = "/"
+    }
+
+    let latestNews: any = [];
+
+    prevNews.forEach((news)=>{
+        // console.log(news);
+        for (let index = 0; index < news.length; index++) {
+            const element = news[index];
+            console.log(element);
+            if (element.date.includes("hrs") || element.date.includes("mins") || element.date.includes("hr") || element.date.includes("min")) {
+                latestNews.push(element)
+            }
+        }
+    })
+
+    console.log(latestNews);
+    let moreLatest = latestNews.slice(0, 3);
+    const mayAlsoLike = moreLatest.slice(0, 6);
     return (
         <>
             <div className="h-5 mx-5 md:mx-10 md:mb-10 mt-0 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Hot <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
+            {latestNews && (
+                <div className="flex flex-col md:flex-row p-5 md:px-10 pt-3">
+                    <div className="w-full">
+                            <NewsBlock title={latestNews[0]?.title || "Latest News"} imageUrl={latestNews[0]?.imageUrl || "https://via.placeholder.com/400x200"} description={latestNews[0]?.description} story={latestNews[0]?.story || "/article"} isHot={true} isBig={true} date={latestNews[0]?.date || "17th May"} location={latestNews[0]?.location || "Lagos"} />
+                    </div>
+                    <div className="md:w-1/3">
+                        <NewsBlock title={latestNews[1]?.title || "Latest News"} description={latestNews[1]?.description} imageUrl={latestNews[1]?.imageUrl || "https://via.placeholder.com/400x200"} story={latestNews[1]?.story || "/article"} isHot={true} isBig={false} date={latestNews[1]?.date || "17th May"} location={latestNews[1]?.location || "Lagos"} />
+                        <NewsBlock title={latestNews[2]?.title || "Latest News"} description={latestNews[2]?.description} imageUrl={latestNews[2]?.imageUrl || "https://via.placeholder.com/400x200"} story={latestNews[2]?.story || "/article"} isHot={true} isBig={false} date={latestNews[2]?.date || "17th May"} location={latestNews[2]?.location || "Lagos"} />
+                    </div>
 
-            <div className="flex flex-col md:flex-row p-5 md:px-10 pt-3">
-                <div className="w-full">
-                    <NewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story. This is a description of the big news story. It provides an overview of the main points and details of the story. This is a description of the big news story. It provides an overview of the main points and details of the story. This is a description of the big news story. It provides an overview of the main points and details of the story. This is a description of the big news story. It provides an overview of the main points and details of the story. This is a description of the big news story. It provides an overview of the main points and details of the story. This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" isHot={true} isBig={true} date="17th May" location="Lagos" />
                 </div>
-                <div className="md:w-1/3">
-                    <NewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" isHot={true} isBig={false} date="17th May" location="Lagos" />
-                    <NewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" isHot={true} isBig={false} date="17th May" location="Lagos" />
-                </div>
-
-            </div>
+            )}
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">More Hot News <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             <div className="w-[90vw] mx-auto">
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
-                <MoreNewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" date="17th May" location="Lagos" time="12:30AM" />
+                {moreLatest.map((article, index) => (
+                    <MoreNewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} date={article.date} location={article.location} time={article.date} />
+                ))}
             </div>
 
 
@@ -35,10 +56,10 @@ function hot() {
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">You May Also Like <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             <div className="flex flex-col md:flex-row justify-evenly w-[90vw] mx-auto pt-6">
-                <NewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" isHot={true} isBig={false} date="17th May" location="Lagos" />
-                <NewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" isHot={true} isBig={false} date="17th May" location="Lagos" />
-                <NewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" isHot={true} isBig={false} date="17th May" location="Lagos" />
-                <NewsBlock title="Big News Title" description="This is a description of the big news story. It provides an overview of the main points and details of the story." imageUrl="https://via.placeholder.com/400x200" story="/article" isHot={true} isBig={false} date="17th May" location="Lagos" />
+                {mayAlsoLike.map((article, index) => (
+                        <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={article.isHot} isBig={false} date={article.date} location={article.location}/>
+
+                ))}
             </div>
 
 
