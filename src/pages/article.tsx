@@ -80,10 +80,10 @@ function article(){
     useEffect(() => {
         console.log(results);
     }, [results]);
-    const filteredResults = results.filter((article) => 
+    const filteredResults = results.filter((article:any) => 
         !article.image?.includes('-60x')
     );
-    const mappedArticles = filteredResults.map((article) => {
+    const mappedArticles = filteredResults.map((article:any) => {
         const mapped = mapArticleToNewsBlock(article);
         return {
                 ...mapped,
@@ -97,13 +97,13 @@ function article(){
     );
     console.log("unique results:", uniqueArticles)
     const otherArticles = uniqueArticles
-    // .filter((article) => article.story !== articleResult.story || null)
-    // .filter((article) => !article.imageUrl?.includes('placeholder'))
+    // .filter((article:any) => article.story !== articleResult.story || null)
+    // .filter((article:any) => !article.imageUrl?.includes('placeholder'))
     .slice(0, 3);
     console.log("other results:", otherArticles)
     const shortArticles = uniqueArticles
-    // .filter((article) => article.story !== firstArticle.story)
-    .filter((article) => !otherArticles.some((other) => other.story === article.story))
+    // .filter((article:any) => article.story !== firstArticle.story)
+    .filter((article:any) => !otherArticles.some((other:any) => other.story === article.story))
     .slice(0, 6);
     console.log("short results:", shortArticles)
 
@@ -203,7 +203,7 @@ function article(){
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Related <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             <div className="w-[90vw] mx-auto mb-10 grid md:grid-cols-3 gap-5">
-                {otherArticles && otherArticles.length > 0 && otherArticles.map((article, index) => (
+                {otherArticles && otherArticles.length > 0 && otherArticles.map((article:any, index:number) => (
                     <NewsBlock 
                         key={index} 
                         title={article.title} 
@@ -223,7 +223,7 @@ function article(){
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">You May Also Like <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             <div className="w-[90vw] mx-auto">
-                {shortArticles && shortArticles.length > 0 && shortArticles.map((article, index) => (
+                {shortArticles && shortArticles.length > 0 && shortArticles.map((article:any, index:number) => (
                     <MoreNewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} date={article.date} location={article.location} time="" />
                 ))}
 

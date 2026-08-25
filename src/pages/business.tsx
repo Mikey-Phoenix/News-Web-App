@@ -46,11 +46,11 @@ function business() {
     if (error) return <p style={{ color: 'red' }}>{error}</p>;
     if (results.length === 0) return <p>No articles found.</p>;
 
-    const filteredResults = results.filter((article) => 
+    const filteredResults = results.filter((article:any) => 
         !article.image?.includes('-60x') 
     )
 
-    const mappedArticles = filteredResults.map((article) => {
+    const mappedArticles = filteredResults.map((article:any) => {
         const mapped = mapArticleToNewsBlock(article);
         return {
                 ...mapped,
@@ -63,25 +63,25 @@ function business() {
         (article, index, self) =>
             index === self.findIndex((a) => a.story === article.story)
     )
-    .filter((article) => article.imageUrl !== null);
+    .filter((article:any) => article.imageUrl !== null);
 
     const moreArticles = uniqueArticles
-    .filter((article) => article.story !== uniqueArticles[0].story)
-    .filter((article) => article.story !== uniqueArticles[1].story)
-    .filter((article) => article.story !== uniqueArticles[2].story)
-    .filter((article) => article.story !== uniqueArticles[3].story)
-    .filter((article) => article.story !== uniqueArticles[4].story)
-    .filter((article) => article.story !== uniqueArticles[5].story)
+    .filter((article:any) => article.story !== uniqueArticles[0].story)
+    .filter((article:any) => article.story !== uniqueArticles[1].story)
+    .filter((article:any) => article.story !== uniqueArticles[2].story)
+    .filter((article:any) => article.story !== uniqueArticles[3].story)
+    .filter((article:any) => article.story !== uniqueArticles[4].story)
+    .filter((article:any) => article.story !== uniqueArticles[5].story)
     .slice(0, 4);
 
     const lastArticles = mappedArticles
-    .filter((article) => article.story !== uniqueArticles[0].story)
-    .filter((article) => article.story !== uniqueArticles[1].story)
-    .filter((article) => article.story !== uniqueArticles[2].story)
-    .filter((article) => article.story !== uniqueArticles[3].story)
-    .filter((article) => article.story !== uniqueArticles[4].story)
-    .filter((article) => article.story !== uniqueArticles[5].story)
-    .filter((article) => !moreArticles.some((other) => other.title === article.title))
+    .filter((article:any) => article.story !== uniqueArticles[0].story)
+    .filter((article:any) => article.story !== uniqueArticles[1].story)
+    .filter((article:any) => article.story !== uniqueArticles[2].story)
+    .filter((article:any) => article.story !== uniqueArticles[3].story)
+    .filter((article:any) => article.story !== uniqueArticles[4].story)
+    .filter((article:any) => article.story !== uniqueArticles[5].story)
+    .filter((article:any) => !moreArticles.some((other:any) => other.title === article.title))
     .slice(0, 4)
 
     console.log("unique articles")
@@ -106,7 +106,7 @@ function business() {
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">More Business News <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             <div className="w-[90vw] mx-auto">
-                {moreArticles.map((article, index) => (
+                {moreArticles.map((article:any, index:number) => (
                     <MoreNewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} date={article.date} location={article.location} time={article.date} />
                 ))}
             </div>
@@ -116,7 +116,7 @@ function business() {
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">You May Also Like <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             <div className="flex flex-col md:flex-row justify-evenly w-[90vw] mx-auto pt-6">
-                {lastArticles.map((article, index) => (
+                {lastArticles.map((article:any, index:number) => (
                     <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={article.isHot} isBig={false} date={article.date} location={article.location} />
                 ))}
             </div>

@@ -136,15 +136,15 @@ function home() {
     if (!usingCache && error) return <AlertTrigger show={!!error} title="Please Check Internet Connection" icon="warning" />;
     if (!usingCache && results.length === 0) return <AlertTrigger show={!!error} title="There was a problem with the Server" icon="error" /> 
 
-    const filteredResults = results.filter((article) => 
+    const filteredResults = results.filter((article:any) => 
         !article.image?.includes('-60x')
     );
-    const filteredSportResults = sportResults.filter((article) =>
+    const filteredSportResults = sportResults.filter((article:any) =>
         !article.image?.includes('-60x') &&
         article.image !== null &&
         !article.image.includes('placeholder')
     );
-    const filteredTechResults = techResults.filter((article) =>
+    const filteredTechResults = techResults.filter((article:any) =>
         !article.image?.includes('-60x') &&
         article.image !== null &&
         article.date !== null &&
@@ -153,42 +153,42 @@ function home() {
 
     // When using the cache, these arrays already contain mapped articles from a previous session,
     // so we use them directly instead of re-mapping fresh scrape results.
-    const mappedArticles = usingCache && cachedNews ? (cachedNews[0] ?? []) : filteredResults.map((article) => {
+    const mappedArticles = usingCache && cachedNews ? (cachedNews[0] ?? []) : filteredResults.map((article:any) => {
         const mapped = mapArticleToNewsBlock(article);
         return {
                 ...mapped,
                 isHot: article.image !== null,  // 👈 true if image exists, false if not
             };
     });
-    const mappedSportArticles = usingCache && cachedNews ? (cachedNews[1] ?? []) : filteredSportResults.map((article) => {
+    const mappedSportArticles = usingCache && cachedNews ? (cachedNews[1] ?? []) : filteredSportResults.map((article:any) => {
         const mapped = mapArticleToNewsBlock(article);
         return {
             ...mapped,
             isHot: article.image !== null,
         };
     });
-    const mappedTechArticles = usingCache && cachedNews ? (cachedNews[2] ?? []) : filteredTechResults.map((article) => {
+    const mappedTechArticles = usingCache && cachedNews ? (cachedNews[2] ?? []) : filteredTechResults.map((article:any) => {
         const mapped = mapArticleToNewsBlock(article);
         return {
             ...mapped,
             isHot: article.image !== null,
         };
     });
-    const mappedHealthArticles = usingCache && cachedNews ? (cachedNews[3] ?? []) : healthResults.map((article) => {
+    const mappedHealthArticles = usingCache && cachedNews ? (cachedNews[3] ?? []) : healthResults.map((article:any) => {
         const mapped = mapArticleToNewsBlock(article);
         return {
             ...mapped,
             isHot: article.image !== null,
         };
     });
-    const mappedBusinessArticles = usingCache && cachedNews ? (cachedNews[4] ?? []) : businessResults.map((article) => {
+    const mappedBusinessArticles = usingCache && cachedNews ? (cachedNews[4] ?? []) : businessResults.map((article:any) => {
         const mapped = mapArticleToNewsBlock(article);
         return {
             ...mapped,
             isHot: article.image !== null,
         };
     });
-    const mappedEntertainmentArticles = usingCache && cachedNews ? (cachedNews[5] ?? []) : entertainmentResults.map((article) => {
+    const mappedEntertainmentArticles = usingCache && cachedNews ? (cachedNews[5] ?? []) : entertainmentResults.map((article:any) => {
         const mapped = mapArticleToNewsBlock(article);
         return {
                 ...mapped,
@@ -231,29 +231,29 @@ function home() {
     const firstArticle = uniqueArticles[0];
 
     const otherArticles = firstArticle ? uniqueArticles
-        .filter((article) => article.story !== firstArticle.story)
-        .filter((article) => !article.imageUrl?.includes('placeholder'))
+        .filter((article:any) => article.story !== firstArticle.story)
+        .filter((article:any) => !article.imageUrl?.includes('placeholder'))
         .slice(0, 2) : [];
 
     const shortArticles = firstArticle ? uniqueArticles
-        .filter((article) => article.story !== firstArticle.story)
-        .filter((article) => !otherArticles.some((other) => other.story === article.story))
+        .filter((article:any) => article.story !== firstArticle.story)
+        .filter((article:any) => !otherArticles.some((other:any) => other.story === article.story))
         .slice(0, 4) : [];
     const shortArticlesTwo = firstArticle ? uniqueArticles
-        .filter((article) => article.story !== firstArticle.story)
-        .filter((article) => !otherArticles.some((other) => other.story === article.story))
-        .filter((article) => !shortArticles.some((short) => short.story === article.story))
+        .filter((article:any) => article.story !== firstArticle.story)
+        .filter((article:any) => !otherArticles.some((other:any) => other.story === article.story))
+        .filter((article:any) => !shortArticles.some((short:any) => short.story === article.story))
         .slice(0, 4) : [];
     const shortArticlesThree = firstArticle ? uniqueArticles
-        .filter((article) => article.story !== firstArticle.story)
-        .filter((article) => !otherArticles.some((other) => other.story === article.story))
-        .filter((article) => !shortArticlesTwo.some((short) => short.story === article.story))
+        .filter((article:any) => article.story !== firstArticle.story)
+        .filter((article:any) => !otherArticles.some((other:any) => other.story === article.story))
+        .filter((article:any) => !shortArticlesTwo.some((short:any) => short.story === article.story))
         .slice(0, 4) : [];
     const shortArticlesExtra = firstArticle ? uniqueArticles
-        .filter((article) => article.story !== firstArticle.story)
-        .filter((article) => !otherArticles.some((other) => other.story === article.story))
-        .filter((article) => !shortArticlesTwo.some((short) => short.story === article.story))
-        .filter((article) => !shortArticlesThree.some((short) => short.story === article.story))
+        .filter((article:any) => article.story !== firstArticle.story)
+        .filter((article:any) => !otherArticles.some((other:any) => other.story === article.story))
+        .filter((article:any) => !shortArticlesTwo.some((short:any) => short.story === article.story))
+        .filter((article:any) => !shortArticlesThree.some((short:any) => short.story === article.story))
         .slice(0, 4) : [];
     const secondArticle = shortArticlesExtra[0];
 
@@ -261,20 +261,20 @@ function home() {
     const firstSportArticle = uniqueSportArticles[0];
 
     const otherSportArticles = firstSportArticle ? uniqueSportArticles
-        .filter((article) => article.story !== firstSportArticle.story)
-        // .filter((article) => !article.imageUrl?.includes('placeholder'))
+        .filter((article:any) => article.story !== firstSportArticle.story)
+        // .filter((article:any) => !article.imageUrl?.includes('placeholder'))
         .slice(0, 3) : [];
 
     const shortSportArticles = firstSportArticle ? uniqueSportArticles
-        .filter((article) => article.story !== firstSportArticle.story)
-        .filter((article) => !otherSportArticles.some((other) => other.story === article.story)) : [];
+        .filter((article:any) => article.story !== firstSportArticle.story)
+        .filter((article:any) => !otherSportArticles.some((other:any) => other.story === article.story)) : [];
 
 
     const firstTechArticle = uniqueTechArticles[0];
 
     const otherTechArticles = firstTechArticle ? uniqueTechArticles
-        .filter((article) => article.story !== firstTechArticle.story)
-        // .filter((article) => !article.imageUrl?.includes('placeholder'))
+        .filter((article:any) => article.title !== firstTechArticle.story)
+        // .filter((article:any) => !article.imageUrl?.includes('placeholder'))
         .slice(0, 4) : [];
 
 
@@ -330,7 +330,7 @@ function home() {
         <>
             <div className="flex flex-col lg:flex-row px-2 md:px-10 pt-3">
                 <div className="lg:w-1/2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-1 order-3 lg:order-1">
-                    {shortArticles.map((article, index) => (
+                    {shortArticles.map((article:any, index:number) => (
                         <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
                     ))}
                 </div>
@@ -340,7 +340,7 @@ function home() {
                     )}
                 </div>
                 <div className="order-2 lg:order-3 grid md:grid-cols-2 lg:grid-cols-1 lg:w-1/2">
-                    {otherArticles.map((article, index) => (
+                    {otherArticles.map((article:any, index:number) => (
                         <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={article.isHot} isBig={false} date={article.date} location={article.location}/>
                     ))}
                 </div>
@@ -375,12 +375,12 @@ function home() {
                         <NewsBlock title={firstSportArticle.title} description={firstSportArticle.description} imageUrl={firstSportArticle.imageUrl} story={firstSportArticle.story} isHot={firstSportArticle.isHot} isBig={firstSportArticle.isBig} date={firstSportArticle.date} location={firstSportArticle.location}/>
                     </div>
                     <div className="w-full md:w-1/2 mx-2 grid grid-cols-2 md:grid-cols-1">
-                        {otherSportArticles.map((article, index) => (
+                        {otherSportArticles.map((article:any, index:number) => (
                             <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
                         ))}
                     </div>
                     <div className="hidden md:block md:w-1/2 mx-2 border-l border-gray-400">
-                        {shortSportArticles.map((article, index) => (
+                        {shortSportArticles.map((article:any, index:number) => (
                             <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
                         ))}
                     </div>
@@ -440,7 +440,7 @@ function home() {
                 </div>
             ) : (
                 <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 justify-evenly w-[90vw] mx-auto">
-                    {otherTechArticles.map((article, index) => (
+                    {otherTechArticles.map((article:any, index:number) => (
                         <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={true} isBig={false} date={article.date} location={article.location}/>
                     ))}
                 </div>
@@ -453,17 +453,17 @@ function home() {
             <div className="flex md:flex-row flex-col p-5 md:p-10">
                 <div className="w-full grid grid-cols-3">
                     <div className="border-r border-gray-400 h-fit">
-                        {shortArticles.map((article, index) => (
+                        {shortArticles.map((article:any, index:number) => (
                             <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
                         ))}
                     </div>
                     <div className="border-r border-gray-400 h-fit">
-                        {shortArticlesTwo.map((article, index) => (
+                        {shortArticlesTwo.map((article:any, index:number) => (
                             <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
                         ))}
                     </div>
                     <div className="border-r border-gray-400 h-fit">
-                        {shortArticlesThree.map((article, index) => (
+                        {shortArticlesThree.map((article:any, index:number) => (
                             <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
                         ))}
                     </div>
@@ -485,7 +485,7 @@ function home() {
                 </div>
             ) : (
                 <div className="flex flex-col md:grid md:grid-cols-1 lg:grid-cols-2 justify-evenly p-5 md:p-10">
-                    {otherHealthArticles.map((article, index) => (
+                    {otherHealthArticles.map((article:any, index:number) => (
                         <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={true} isBig={true} date={article.date} location={article.location}/>
                     ))}
                 </div>
@@ -502,18 +502,18 @@ function home() {
             ) : (
                 <div className="w-[90vw] mx-auto grid grid-cols-3 gap-5">
                     <div className="border-r border-gray-400">
-                        {businessArticlesOne.map((article, index) => (
+                        {businessArticlesOne.map((article:any, index:number) => (
                             <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
                         ))}
                     </div>
                     <div className="border-r border-gray-400">
-                        {businessArticlesTwo.map((article, index) => (
+                        {businessArticlesTwo.map((article:any, index:number) => (
                             <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
                         ))}
 
                     </div>
                     <div className="border-r border-gray-400">
-                        {businessArticlesThree.map((article, index) => (
+                        {businessArticlesThree.map((article:any, index:number) => (
                             <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
                         ))}
 
@@ -531,7 +531,7 @@ function home() {
                 </div>
             ) : (
                 <div className="w-[90vw] mx-auto mt-4 mb-5 grid grid-cols-3 gap-5">
-                    {uniqueEntertainmentArticles.slice(0, 3).map((article, index) => (
+                    {uniqueEntertainmentArticles.slice(0, 3).map((article:any, index:number) => (
                         <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
                     ))}
                 </div>

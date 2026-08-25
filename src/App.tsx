@@ -76,6 +76,7 @@ function Navbar() {
       if (window.innerWidth > 768) {
         setScreenSize(prev => !prev)
       }
+      // console.log(screenSize)
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -167,9 +168,9 @@ function Navbar() {
               )}
               <div className="flex justify-end space-x-4 w-full">
                   {!mobileSearch ? (
-                    <div className="relative w-full md:hidden flex rounded-sm cursor-pointer " onClick={searchBar}>
-                        <input className='border border-2 rounded-md px-2 border-[var(--tertiary)]' type="search" placeholder="Search..." />
-                        <IoMdSearch className='absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md' />
+                    <div className="relative w-full md:hidden flex rounded-sm cursor-pointer border border-2 rounded-md border-[var(--tertiary)]" >
+                        <input className='  px-2 ' type="search" placeholder="Search..." onChange={(e) => setSearchTerm(e.target.value)} />
+                        <IoMdSearch className='absolute top-[50%] right-0 w-[20%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md' onClick={()=>{window.location.href = "/search"}} />
                     </div>
                   ) : (
                     <div className="md:hidden flex rounded-sm cursor-pointer text-2xl " onClick={searchBar}>

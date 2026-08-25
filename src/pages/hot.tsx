@@ -9,11 +9,11 @@ function hot() {
     let prevNews = JSON.parse(localStorage.getItem("prevNews") || "[]");
     if (prevNews.length === 0) {
         window.location.href = "/"
-    }
+    }   
 
     let latestNews: any = [];
 
-    prevNews.forEach((news)=>{
+    prevNews.forEach((news:any)=>{
         // console.log(news);
         for (let index = 0; index < news.length; index++) {
             const element = news[index];
@@ -25,8 +25,10 @@ function hot() {
     })
 
     console.log(latestNews);
-    let moreLatest = latestNews.slice(0, 3);
-    const mayAlsoLike = moreLatest.slice(0, 6);
+    let moreLatest = latestNews.slice(3, 9);
+    const mayAlsoLike = latestNews
+    .filter((article:any) => !moreLatest.some((other:any) => other.story === article.story)).slice(9, 13) ;
+    // const mayAlsoLike = moreLatest.slice(0, 6);
     return (
         <>
             <div className="h-5 mx-5 md:mx-10 md:mb-10 mt-0 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Hot <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
@@ -46,7 +48,7 @@ function hot() {
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">More Hot News <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             <div className="w-[90vw] mx-auto">
-                {moreLatest.map((article, index) => (
+                {moreLatest.map((article:any, index:number) => (
                     <MoreNewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} date={article.date} location={article.location} time={article.date} />
                 ))}
             </div>
@@ -56,7 +58,7 @@ function hot() {
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">You May Also Like <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             <div className="flex flex-col md:flex-row justify-evenly w-[90vw] mx-auto pt-6">
-                {mayAlsoLike.map((article, index) => (
+                {mayAlsoLike.map((article:any, index:number) => (
                         <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={article.isHot} isBig={false} date={article.date} location={article.location}/>
 
                 ))}
