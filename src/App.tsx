@@ -10,6 +10,7 @@ import Hot from "./pages/hot"
 import Weather from "./pages/weather"
 import Article from "./pages/article"
 import Search from "./pages/search"
+import Video from "./pages/video"
 import { IoMdSearch } from "react-icons/io";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoClose } from "react-icons/io5";
@@ -286,6 +287,7 @@ function Navbar() {
           <Route path="/entertainment" element={<Entertainment />} />
           <Route path="/article" element={<Article />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/video" element={<Video />} />
         </Routes>
       </SkeletonTheme>
     </>

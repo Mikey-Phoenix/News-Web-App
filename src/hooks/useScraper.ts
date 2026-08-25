@@ -222,28 +222,28 @@ export const useArticleScraper = () => {
   return { scrape, result, loading, error };
 };
 
-// export const useVideoScraper = () => {
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState<string | null>(null);
-//   const [results, setResults] = useState<ScrapeResult[]>([]);
+export const useVideoScraper = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [results, setResults] = useState<ScrapeResult[]>([]);
 
-//   // --- BBC Video ---
-//   const scrape = async (url: string) => {
-//     setLoading(true);
-//     setError(null);
-//     try {
-//       const { data } = await axios.get<ScrapeResponse>(`http://localhost:4000/api/scrape-video`, {
-//         params: { url },
-//         timeout: 120000,
-//       });
-//       setResults(data.data);
-//     } catch (error: any) {
-//       console.error('Video scrape error:', error?.response?.data || error?.message || error);
-//       setError('Video scraping failed. Check the URL or server.');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+  // --- BBC Video ---
+  const scrape = async (url: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data } = await axios.get<ScrapeResponse>(`http://localhost:4000/api/scrape-video`, {
+        params: { url },
+        timeout: 120000,
+      });
+      setResults(data.data);
+    } catch (error: any) {
+      console.error('Video scrape error:', error?.response?.data || error?.message || error);
+      setError('Video scraping failed. Check the URL or server.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-//   return { scrape, results, loading, error };
-// };
+  return { scrape, results, loading, error };
+};

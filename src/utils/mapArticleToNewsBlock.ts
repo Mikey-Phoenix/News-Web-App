@@ -53,3 +53,17 @@ export const mapArticleToNewsBlock = (article: ScrapeResult): NewsBlockProps => 
     location: article.tag || extractLocation(article.url),
   };
 };
+
+// Shared mapper — works for both news and sport articles
+export const mapArticleToVideoBlock = (article: ScrapeResult): NewsBlockProps => {
+  return {
+    title: article.title || 'Untitled Story',
+    description: article.description || 'No description available.',
+    imageUrl: article.image || 'https://via.placeholder.com/400x200',
+    story: article.url,
+    isHot: false,
+    isBig: true,
+    date: article.date ? formatDate(article.date) : 'Unknown Date',
+    location: article.tag || extractLocation(article.url),
+  };
+};

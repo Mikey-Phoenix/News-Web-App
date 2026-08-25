@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import puppeteer, { Browser } from 'puppeteer-core';
 import * as cheerio from 'cheerio';
+import fs from 'fs';
+import path from 'path';
 
 
 
@@ -56,7 +58,7 @@ process.on('uncaughtException', (err) => {
 });
 
 // --- Shared helper: get page HTML via a tab on the shared browser ---
-const getPageHTML = async (url: string): Promise<string> => {
+const getPageHTML = async (url: string, waitFor?: string): Promise<string> => {
   const browser = await getBrowser();
   const page = await browser.newPage();
   try {
@@ -86,6 +88,12 @@ const getPageHTML = async (url: string): Promise<string> => {
     });
 
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
+    console.log('Navigating to:', url);
+    if (waitFor) {
+      await page.waitForSelector(waitFor, { timeout: 10000 }).catch(() => {
+        console.log(`Selector never appeared: ${waitFor}`);
+      });
+    }
     const html = await page.content();
     return html;
   } finally {
@@ -373,38 +381,39 @@ const scrapeEntertainment = async (url: string): Promise<NewsArticle[]> => {
 
 // Video — bbc.com/video
 const scrapeVideo = async (url: string): Promise<NewsArticle[]> => {
-  const html = await getPageHTML(url);
+  // const html = await getPageHTML(url);
+  const html = await getPageHTML(url, '[data-testid="anchor-inner-wrapper"]');
+
+  // fs.writeFileSync(path.join(process.cwd(), 'debug.html'), html);
   const $ = cheerio.load(html);
   const articles: NewsArticle[] = [];
   const clean = (text: string) => text.replace(/\s+/g, ' ').trim();
   const baseUrl = 'https://www.bbc.com';
 
-  // Container — data-testid="edinburgh-card"
-  $('[data-testid="edinburgh-card"]').each((_: number, el: any) => {
+  $('[data-testid="anchor-inner-wrapper"]').each((_: number, el: any) => {
     const container = $(el);
 
-    // URL — href on the internal-link anchor inside the card
+    // URL — href on the internal-link anchor
     const href = container.find('a[data-testid="internal-link"]').first().attr('href') || '';
     const articleUrl = href.startsWith('http') ? href : `${baseUrl}${href}`;
 
-    // Title — data-testid="card-headline"
+    // Title
     const title = clean(container.find('[data-testid="card-headline"]').first().text());
 
-    // Description — data-testid="card-description"
+    // Description
     const description = clean(container.find('[data-testid="card-description"]').first().text());
 
-    // Image — img with classes sc-5340b511-0 and hLdNfA
-    const image = getImage(container.find('img.sc-5340b511-0.hLdNfA').first());
+    // Image — no more hashed classes, just target the img inside card-media
+    const image = getImage(container.find('[data-testid="card-media"] img').first());
 
-    // Tag — data-testid="card-metadata-tag" e.g. "The Travel Show"
+    // Tag
     const tag = clean(
       container.find('[data-testid="card-metadata-tag"]').first().text()
     ) || null;
 
-    // Date — not present in this card type
     const date: string | null = null;
 
-    if (title && articleUrl) {
+    if (title && href) {
       articles.push({ title, image, description, date, tag, url: articleUrl });
     }
   });

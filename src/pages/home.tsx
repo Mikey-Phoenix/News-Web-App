@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { useScraper, useSportScraper, useTechScraper, useHealthScraper, useBusinessScraper, useEntertainmentScraper } from '../hooks/useScraper'; 
+import { useScraper, useSportScraper, useTechScraper, useHealthScraper, useBusinessScraper, useEntertainmentScraper, useVideoScraper } from '../hooks/useScraper'; 
 // , useVideoScraper
-import { mapArticleToNewsBlock } from '../utils/mapArticleToNewsBlock';
+import { mapArticleToNewsBlock, mapArticleToVideoBlock } from '../utils/mapArticleToNewsBlock';
 // import { mapSportArticleToNewsBlock } from '../utils/mapArticleToNewsBlock';
 import NewsBlock from "../components/newsblock";
 import VideoBlock from "../components/videoblock";
@@ -54,7 +54,7 @@ function home() {
     const { scrape: scrapeHealth, results: healthResults, loading: healthLoading } = useHealthScraper();
     const { scrape: scrapeBusiness, results: businessResults, loading: businessLoading } = useBusinessScraper();
     const { scrape: scrapeEntertainment, results: entertainmentResults, loading: entertainmentLoading } = useEntertainmentScraper();
-    // const { scrape: scrapeVideo, results: videoResults } = useVideoScraper();
+    const { scrape: scrapeVideo, results: videoResults } = useVideoScraper();
 
     const hasScraped = useRef(false);
 
@@ -82,7 +82,7 @@ function home() {
         scrapeHealth('https://www.bbc.com/health');
         scrapeBusiness('https://www.bbc.com/business');
         scrapeEntertainment('https://www.bbc.com/culture');
-        // scrapeVideo('https://www.bbc.com/news/video_and_audio');
+        scrapeVideo('https://www.bbc.com/video');
     }, []);
     useEffect(() => {
         if (usingCache && results.length > 0) {
@@ -146,9 +146,13 @@ function home() {
     );
     const filteredTechResults = techResults.filter((article:any) =>
         !article.image?.includes('-60x') &&
-        article.image !== null &&
-        article.date !== null &&
-        !article.image.includes('placeholder')
+        article.image !== null
+        // article.date !== null &&
+        // !article.image.includes('placeholder')
+    );
+    const filteredVideoResults = videoResults.filter((article:any) =>
+        !article.image?.includes('-60x') &&
+        article.image !== null
     );
 
     // When using the cache, these arrays already contain mapped articles from a previous session,
@@ -195,37 +199,48 @@ function home() {
                 isHot: article.image !== null,  // 👈 true if image exists, false if not
             };
     });
+    const mappedVideoArticles = usingCache && cachedNews ? (cachedNews[6] ?? []) : filteredVideoResults.map((article:any) => {
+        const mapped = mapArticleToVideoBlock(article);
+        return {
+            ...mapped,
+            isHot: article.image !== null,
+        };
+    });
 
 
-    let prevNews = [mappedArticles, mappedSportArticles, mappedTechArticles, mappedHealthArticles, mappedBusinessArticles, mappedEntertainmentArticles];
+    let prevNews = [mappedArticles, mappedSportArticles, mappedTechArticles, mappedHealthArticles, mappedBusinessArticles, mappedEntertainmentArticles, mappedVideoArticles];
     localStorage.setItem('prevNews', JSON.stringify(prevNews));
     let newsCheck = JSON.parse(localStorage.getItem('prevNews') || '[]');
    // localStorage.removeItem('prevNews');
 
 
     const uniqueArticles = mappedArticles.filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
+        (article:any, index:number, self:any) =>
+            index === self.findIndex((a:any) => a.story === article.story)
     );
     const uniqueSportArticles = mappedSportArticles.filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
+        (article:any, index:number, self:any) =>
+            index === self.findIndex((a:any) => a.story === article.story)
+    );
+    const uniqueVideoArticles = mappedVideoArticles.filter(
+        (article:any, index:number, self:any) =>
+            index === self.findIndex((a:any) => a.story === article.story)
     );
     const uniqueTechArticles = mappedTechArticles.filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
+        (article:any, index:number, self:any) =>
+            index === self.findIndex((a:any) => a.story === article.story)
     );
     const uniqueHealthArticles = mappedHealthArticles.filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
+        (article:any, index:number, self:any) =>
+            index === self.findIndex((a:any) => a.story === article.story)
     );
     const uniqueBusinessArticles = mappedBusinessArticles.filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
+        (article:any, index:number, self:any) =>
+            index === self.findIndex((a:any) => a.story === article.story)
     );
     const uniqueEntertainmentArticles = mappedEntertainmentArticles.filter(
-        (article, index, self) =>
-            index === self.findIndex((a) => a.story === article.story)
+        (article:any, index:number, self:any) =>
+            index === self.findIndex((a:any) => a.story === article.story)
     );
 
     const firstArticle = uniqueArticles[0];
@@ -326,6 +341,8 @@ function home() {
         mappedEntertainmentArticles
     );
 
+    console.log(mappedVideoArticles)
+
     return (
         <>
             <div className="flex flex-col lg:flex-row px-2 md:px-10 pt-3">
@@ -352,13 +369,9 @@ function home() {
 
             <div className="my-5 w-[93vw] md:w-[90vw] mx-auto h-[60vh] max-h-[300px] lg:max-h-[600px] rounded-md overflow-x-auto overflow-y-hidden bg-[var(--offbg)]">
                 <div className="h-full w-max mt-5 px-8 md:px-16 py-4 flex">
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
+                    {uniqueVideoArticles.map((article:any, index:number) => (
+                        <VideoBlock key={index} url={article.imageUrl} story={article.story} title={article.title} date={article.date} isWhite={true} />
+                    ))}
                 </div>
             </div>
             

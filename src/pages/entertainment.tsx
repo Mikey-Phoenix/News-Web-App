@@ -1,22 +1,24 @@
 import NewsBlock from "../components/newsblock"
 import MoreNewsBlock from "../components/morenewsblock"
-import { useEntertainmentScraper } from "../hooks/useScraper"
+import { useEntertainmentScraper, useVideoScraper } from "../hooks/useScraper"
 import VideoBlock from "../components/videoblock"
 import { FaAngleRight } from "react-icons/fa6"
 import Footer from "../components/footer"
 import { useEffect, useRef } from "react"
-import { mapArticleToNewsBlock } from "../utils/mapArticleToNewsBlock"
+import { mapArticleToNewsBlock, mapArticleToVideoBlock } from "../utils/mapArticleToNewsBlock"
 import { AlertTrigger } from '../utils/alerts';
 
 function entertainment() {
 
     const { scrape, results: results, loading, error } = useEntertainmentScraper();
+    const { scrape: videoScrape, results: videoResults, loading: videoLoading, error: videoError } = useVideoScraper();
                 
     const hasScraped = useRef(false);
     useEffect(() => {
         if (hasScraped.current) return;
             hasScraped.current = true;
         scrape('https://www.bbc.com/culture');
+        videoScrape('https://www.bbc.com/video')
     }, []);
 
 
@@ -27,6 +29,9 @@ function entertainment() {
     const filteredResults = results.filter((article:any) => 
         !article.image?.includes('-60x') 
     )
+    const filteredVideoResults = videoResults.filter((article:any) => 
+        !article.image?.includes('-60x') 
+    )
 
     const mappedArticles = filteredResults.map((article:any) => {
         const mapped = mapArticleToNewsBlock(article);
@@ -35,8 +40,21 @@ function entertainment() {
                 isHot: article.image !== null,  // 👈 true if image exists, false if not
             };
     });
+    const mappedVideoArticles = filteredVideoResults.map((article:any) => {
+        const mapped = mapArticleToVideoBlock(article);
+        return {
+                ...mapped,
+                isHot: article.image !== null,  // 👈 true if image exists, false if not
+            };
+    });
 
     const uniqueArticles = mappedArticles
+    .filter(
+        (article, index, self) =>
+            index === self.findIndex((a) => a.story === article.story)
+    )
+    .filter((article:any) => article.imageUrl !== null);
+    const uniqueVideoArticles = mappedVideoArticles
     .filter(
         (article, index, self) =>
             index === self.findIndex((a) => a.story === article.story)
@@ -62,14 +80,10 @@ function entertainment() {
             <div className="h-5 mx-5 md:mx-10 md:mb-10 mt-0 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Entertainment <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             <div className="my-5 w-[93vw] md:w-[90vw] mx-auto h-[60vh] max-h-[300px] lg:max-h-[600px] rounded-md overflow-x-auto overflow-y-hidden bg-[var(--offbg)]">
-                <div className="h-full w-max mt-5 px-16 py-4 flex gap-4">
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
-                    <VideoBlock url="url" title="Video Title" date="17th May" />
+                <div className="h-full w-max mt-5 px-8 md:px-16 py-4 flex">
+                    {uniqueVideoArticles.map((article:any, index:number) => (
+                        <VideoBlock key={index} url={article.imageUrl} story={article.story} title={article.title} date={article.date} isWhite={true} />
+                    ))}
                 </div>
             </div>
 
