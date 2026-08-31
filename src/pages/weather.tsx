@@ -2,14 +2,14 @@
 /** @format */
 'use client'
 
-import React from "react";
-import { useWeather } from "../hooks/useWeather";
-// import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import type { WeatherData } from "../types/weather";
-import { QueryClient, QueryClientProvider, useQuery, } from '@tanstack/react-query'
-import { Navigate } from 'react-router-dom';
-import { Route } from "react-router-dom";
+// import React from "react";
+// import { useWeather } from "../hooks/useWeather";
+// // import { useQuery } from "@tanstack/react-query";
+// import axios from "axios";
+// import type { WeatherData } from "../types/weather";
+// import { QueryClient, QueryClientProvider, useQuery, } from '@tanstack/react-query'
+// import { Navigate } from 'react-router-dom';
+// import { Route } from "react-router-dom";
 
 {/* <Route path="/weather" element={<Navigate to="https://weather-app-u32l.vercel.app/" replace />} /> */}
 export default function WeatherPage() {

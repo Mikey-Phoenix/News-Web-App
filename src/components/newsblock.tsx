@@ -17,8 +17,6 @@ function redirect(story:string){
     } else {
         window.location.href = `/article?story=${encodeURIComponent(fixedStory)}`;
     }
-    console.log(encodeURIComponent(fixedStory));
-    console.log(fixedStory);
     // localStorage.removeItem("tempLocation")
 }
 export default function NewsBlock({ title, description, imageUrl, story, isHot, isBig, date, location }: { title: string, description: string, imageUrl: string, story: string, isHot: boolean, isBig: boolean, date: string, location: string }) {

@@ -1,15 +1,14 @@
-import React from 'react'
-import { useSearchParams } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+// import React from 'react'
+// import { useSearchParams } from 'react-router-dom';
+// import { useState, useEffect, useRef } from 'react';
 import Footer from '../components/footer'
 import { FaAngleRight } from 'react-icons/fa6'
 import VideoBlock from '../components/videoblock'
 
 function Video() {
-    const [searchParams] = useSearchParams();
-    const story = searchParams.get('story');
-    const hasRunRef = useRef<string | null>(null);
-    console.log(story)
+    // const [searchParams] = useSearchParams();
+    // const story = searchParams.get('story');
+    // const hasRunRef = useRef<string | null>(null);
 
     window.location.replace('/');
 

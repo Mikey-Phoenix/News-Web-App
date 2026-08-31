@@ -23,8 +23,8 @@ function entertainment() {
 
 
     if (loading) return <p>Scraping...</p>;
-    if (error) return <p style={{ color: 'red' }}>{error}</p>;
-    if (results.length === 0) return <p>No articles found.</p>;
+    if (error) return <AlertTrigger show={!!error} title="Please Check Internet Connection" icon="warning" />;
+    if (results.length === 0) return <AlertTrigger show={!!error} title="There was a problem with the server" icon="error" />;
 
     const filteredResults = results.filter((article:any) => 
         !article.image?.includes('-60x') 
@@ -72,8 +72,6 @@ function entertainment() {
     .filter((article:any) => !moreArticles.some((other:any) => other.title === article.title))
     .slice(0, 4)
 
-    console.log("unique articles")
-    console.log(uniqueArticles)
 
     return (
         <>
