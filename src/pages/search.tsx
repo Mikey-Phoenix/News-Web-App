@@ -51,9 +51,9 @@ export default function Search () {
                         <input className='w-full text-xl border border-2 rounded-sm p-2 border-[var(--tertiary)]' type="text" placeholder='Search news, topics and more' onChange={(e) => setSearchTerm(e.target)} />
 
                     )}
-                    <IoMdSearch className="absolute top-[50%] right-0 w-[15%] md:w-[10%] lg:w-[5%] h-full py-2 cursor-pointer translate-y-[-50%] text-white bg-[var(--tertiary)] rounded-md" onClick={(e) => setSearchTerm(e.target.parentElement.children[0].value)} />
+                    <IoMdSearch className="absolute top-[50%] right-0 w-[15%] md:w-[10%] lg:w-[5%] h-full py-2 cursor-pointer translate-y-[-50%] text-white bg-[var(--tertiary)] rounded-md" onClick={(e) => setSearchTerm((e.currentTarget.parentElement!.children[0] as HTMLInputElement).value)} />
                     {SearchParam && (
-                        <IoClose className="absolute top-[50%] right-15 w-[15%] md:w-[10%] lg:w-[5%] h-full py-2 cursor-pointer translate-y-[-50%] text-[var(--tertiary)] bg-white border-y-2 border-[var(--tertiary)]" onClick={(e) => clearSearchBar(e.target.parentElement.children[0])}/>
+                        <IoClose className="absolute top-[50%] right-15 w-[15%] md:w-[10%] lg:w-[5%] h-full py-2 cursor-pointer translate-y-[-50%] text-[var(--tertiary)] bg-white border-y-2 border-[var(--tertiary)]" onClick={(e) => clearSearchBar(e.currentTarget.parentElement!.children[0])}/>
                     )}
                     
 
