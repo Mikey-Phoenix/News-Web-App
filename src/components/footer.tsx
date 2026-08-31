@@ -4,13 +4,15 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FaTiktok } from "react-icons/fa";
 import { BiLogoGmail } from "react-icons/bi";
 import { redirect } from "react-router-dom";
+import logo from "../assets/footer_logo.png";
 
 
 export default function Footer () {
     return (
         <>
             <div id="footer" className="w-full mt-24 md:mt-48 py-6 px-10 bg-[var(--tertiary)] text-white">
-                <h1 className="text-3xl md:text-5xl font-bold">Logo</h1>
+                {/* <h1 className="text-3xl md:text-5xl font-bold">Logo</h1> */}
+                <img src={logo} alt="Brand Name" width="300px" />
                 <div className="grid grid-cols-3 gap-y-3 lg:flex justify-between lg:w-[50%] mt-5">
                     <a href="/" className="hover:text-[var(--secondary)]">Home</a>
                     <a href="/hot" className="hover:text-[var(--secondary)]">Hot</a>

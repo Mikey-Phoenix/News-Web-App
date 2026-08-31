@@ -1,3 +1,7 @@
+/** @format */
+'use client'
+
+
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
 import Home from "./pages/home"
 import Tech from "./pages/tech"
@@ -22,6 +26,7 @@ import { BiLogoGmail } from "react-icons/bi";
 import { useState, useEffect, useCallback } from 'react';
 import "react-loading-skeleton/dist/skeleton.css";
 import { SkeletonTheme } from 'react-loading-skeleton';
+import logo from './assets/brandName.png'
 
 
 // ── toggle hook (same file, no import needed) ──────────────────
@@ -30,26 +35,6 @@ function useToggle(initial: boolean = false) {
   const toggle = useCallback(() => setIsOn(v => !v), []);
   return { isOn, toggle };
 }
-// interface GridItem {
-//     title: string;
-//     description: string; // or whatever text field you're filtering on
-//     // ...other fields
-// }
-
-// interface FilterableGridProps {
-//     items: GridItem[];
-// }
-
-// function FilterableGrid({ items }: FilterableGridProps) {
-//     const [searchTerm, setSearchTerm] = useState('');
-
-//     const filteredItems = items.filter((item) =>
-//         item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//         item.description.toLowerCase().includes(searchTerm.toLowerCase())
-//     );
-//   };
-// ───────────────────────────────────────────────────────────────
-
 function setSearchTerm (item:any) {
   localStorage.setItem('SearchParam', item.toLowerCase())
 }
@@ -104,6 +89,7 @@ function Navbar() {
     <>
       <nav className="fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-between bg-[var(--primary)] text-white">
 
+        <a href="https://weather-app-u32l.vercel.app/" className="hidden"></a>
         {/* Top section - slides up when scrolled */}
 
         {screenSize ? (
@@ -112,8 +98,8 @@ function Navbar() {
               <input className='border border-2 rounded-md p-2 border-[var(--tertiary)]' type="search" placeholder="Search..." onChange={(e) => setSearchTerm(e.target.value)}/>
               <IoMdSearch className="absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md" onClick={()=>{window.location.href = "/search"}} />
             </div>
-            <div className="text-3xl md:text-5xl font-bold">Logo</div>
-
+            {/* <div className="text-3xl md:text-5xl font-bold">Logo</div> */}
+            <img src={logo} alt="Brand Name" width="200px"/>
             {/* Hamburger — opens mobile menu */}
             <div
               onClick={toggle}   // ✅ wired to toggle
@@ -130,7 +116,8 @@ function Navbar() {
                 <input className='border border-2 rounded-md p-2 border-[var(--tertiary)]' type="search" placeholder="Search..." onChange={(e) => setSearchTerm(e.target.value)}/>
                 <IoMdSearch className="absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md" onClick={()=>{window.location.href = "/search"}} />
               </div>
-              <div className="text-3xl md:text-5xl font-bold">Logo</div>
+              {/* <div className="text-3xl md:text-5xl font-bold">Logo</div> */}
+              <img src={logo} alt="Brand Name" width="400px" />
 
               {/* Hamburger — opens mobile menu */}
               <div
@@ -165,7 +152,8 @@ function Navbar() {
           <div className="absolute top-0 right-0 w-[100vw] h-[100vh] p-10 flex flex-col bg-[var(--primary)]">
             <div className="flex justify-between items-center mb-5">
               {mobileSearch && (
-                <div className="w-full mr-2 text-3xl font-bold">Logo</div>
+                // <div className="w-full mr-2 text-3xl font-bold">Logo</div>
+                <img src={logo} alt="Brand Name" width="200px" />
               )}
               <div className="flex justify-end space-x-4 w-full">
                   {!mobileSearch ? (
@@ -293,11 +281,10 @@ function Navbar() {
     </>
   )
 }
-
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
+        <Navbar />
     </BrowserRouter>
   )
 }

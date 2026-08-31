@@ -13,7 +13,8 @@ function fixArticlePath(url: string): string {
 }
 function redirectToVideo(story:string){
     const fixedStory = fixArticlePath(story);
-    window.location.href = `/video?story=${encodeURIComponent(fixedStory)}`;
+    // window.location.href = `/video?story=${encodeURIComponent(fixedStory)}`;
+    window.location.replace(fixedStory)
     console.log(encodeURIComponent(fixedStory));
     console.log(fixedStory);
 }

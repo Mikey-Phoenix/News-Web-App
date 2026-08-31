@@ -139,6 +139,7 @@ function home() {
     const filteredResults = results.filter((article:any) => 
         !article.image?.includes('-60x')
     );
+    console.log(filteredResults)
     const filteredSportResults = sportResults.filter((article:any) =>
         !article.image?.includes('-60x') &&
         article.image !== null &&
@@ -247,7 +248,7 @@ function home() {
 
     const otherArticles = firstArticle ? uniqueArticles
         .filter((article:any) => article.story !== firstArticle.story)
-        .filter((article:any) => !article.imageUrl?.includes('placeholder'))
+        // .filter((article:any) => !article.imageUrl?.includes('placeholder'))
         .slice(0, 2) : [];
 
     const shortArticles = firstArticle ? uniqueArticles
@@ -323,12 +324,7 @@ function home() {
 
         if (currentPrevNews !== latestNewsString) {
             localStorage.setItem('prevNews', latestNewsString);
-            console.log('====================================');
-            console.log("The new prevNews");
-            console.log(localStorage.getItem('prevNews'));
-            console.log('====================================');
         } else {
-            console.log("No new articles");
         }
     }
 
@@ -341,7 +337,6 @@ function home() {
         mappedEntertainmentArticles
     );
 
-    console.log(mappedVideoArticles)
 
     return (
         <>
@@ -400,7 +395,7 @@ function home() {
                 </div>
             )}
 
-            <button className="bg-[var(--tertiary)] cursor-pointer ml-4 mb-3 p-2 rounded-md hover:bg-[var(--tertiary-light)] text-white">View More</button>
+            {/* <button className="bg-[var(--tertiary)] cursor-pointer ml-4 mb-3 p-2 rounded-md hover:bg-[var(--tertiary-light)] text-white">View More</button> */}
 
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Weather<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>

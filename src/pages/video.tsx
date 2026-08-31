@@ -11,6 +11,8 @@ function Video() {
     const hasRunRef = useRef<string | null>(null);
     console.log(story)
 
+    window.location.replace('/');
+
   return (
     <div className='mt-[-25px] bg-[var(--tertiary)] '>
         <div className='min-h-[50vh]'>
