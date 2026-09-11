@@ -62,7 +62,6 @@ function Navbar() {
       if (window.innerWidth > 768) {
         setScreenSize(prev => !prev)
       }
-      // console.log(screenSize)
     }
 
     window.addEventListener('scroll', handleScroll)

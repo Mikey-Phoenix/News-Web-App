@@ -33,6 +33,8 @@ interface ScrapeArticleResponse {
      data: NewsArticle;
    }
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const useScraper = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +45,7 @@ export const useScraper = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get<ScrapeResponse>(`http://localhost:4000/api/scrape`, {
+      const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape`, {
         params: { url },
         timeout: 120000,
       });
@@ -69,7 +71,7 @@ export const useSportScraper = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get<ScrapeResponse>(`http://localhost:4000/api/scrape-sport`, {
+      const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape-sport`, {
         params: { url },
         timeout: 120000,
       });
@@ -95,7 +97,7 @@ export const useTechScraper = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get<ScrapeResponse>(`http://localhost:4000/api/scrape-tech`, {
+      const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape-tech`, {
         params: { url },
         timeout: 120000,
       });
@@ -121,7 +123,7 @@ export const useHealthScraper = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get<ScrapeResponse>(`http://localhost:4000/api/scrape-health`, {
+      const { data } = await axios.get<ScrapeResponse>(`${API_URL}api/scrape-health`, {
         params: { url },
         timeout: 120000,
       });
@@ -147,7 +149,7 @@ export const useBusinessScraper = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get<ScrapeResponse>(`http://localhost:4000/api/scrape-business`, {
+      const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape-business`, {
         params: { url },
         timeout: 120000,
       });
@@ -173,7 +175,7 @@ export const useEntertainmentScraper = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get<ScrapeResponse>(`http://localhost:4000/api/scrape-entertainment`, {
+      const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape-entertainment`, {
         params: { url },
         timeout: 120000,
       });
@@ -201,7 +203,7 @@ export const useArticleScraper = () => {
     setError(null);
     try {
       const { data } = await axios.get<{ success: boolean; data: NewsArticle }>(
-        `http://localhost:4000/api/scrape-article`,
+        `${API_URL}/api/scrape-article`,
         { params: { url }, timeout: 120000 }
       );
       if (requestId === requestIdRef.current) {
@@ -232,7 +234,7 @@ export const useVideoScraper = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get<ScrapeResponse>(`http://localhost:4000/api/scrape-video`, {
+      const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape-video`, {
         params: { url },
         timeout: 120000,
       });
