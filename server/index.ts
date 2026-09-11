@@ -38,21 +38,19 @@ const localArgs = [
 ]
 
 const getBrowser = async (): Promise<Browser> => {
+  console.log('getBrowser called');
   if (browserInstance && browserInstance.connected) {
+    console.log('Returning cached browser instance');
     return browserInstance;
   }
-  console.log('Resolved path:', isProd ? 'PROD BRANCH' : 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe');
+  console.log('Launching new browser with local Chrome path');
   browserInstance = await puppeteer.launch({
-    // executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    executablePath:  isProd
-    ? await chromium.executablePath() : 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    // headless: 'new' as any,
+    executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
     headless: true,
-    args: isProd ? [...chromium.args, ...localArgs] : localArgs,
+    args: localArgs,
   });
   return browserInstance;
 };
-
 // Clean shutdown on exit
 process.on('SIGINT', async () => {
   if (browserInstance) await browserInstance.close();
