@@ -79,8 +79,6 @@ function politics() {
     .filter((article:any) => !moreArticles.some((other:any) => other.title === article.title))
     .slice(0, 4)
 
-    console.log("unique articles")
-    console.log(uniqueArticles)
 
     return (
         <>

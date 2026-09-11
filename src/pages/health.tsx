@@ -51,13 +51,7 @@ function health() {
 
     const filteredResults = results.filter((article:any) => 
         !article.image?.includes('-60x') 
-        // &&
-        // article.image !== null &&
-        // !article.image.includes('placeholder')
     )
-    // console.log('====================================');
-    // console.log(article);
-    // console.log('====================================');
 
     const mappedArticles = filteredResults.map((article:any) => {
         const mapped = mapArticleToNewsBlock(article);
@@ -66,17 +60,12 @@ function health() {
                 isHot: article.image !== null,  // 👈 true if image exists, false if not
             };
     });
-    // console.log('====================================');
-    // console.log(mappedArticles);
-    // console.log('====================================');
 
     // const uniqueArticles = mappedArticles.filter(
     //     (article, index, self) =>
     //         index === self.findIndex((a) => a.story === article.story)
     // )
     const uniqueArticles = mappedArticles
-    // console.log("unique articles")
-    // console.log(uniqueArticles)
     // .filter((article:any) => article.imageUrl !== null);
 
 

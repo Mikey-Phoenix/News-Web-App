@@ -5,7 +5,6 @@ import Footer from "../components/footer"
 
 function hot() {
 
-    // console.log(JSON.parse(localStorage.getItem("prevNews")))
     let prevNews = JSON.parse(localStorage.getItem("prevNews") || "[]");
     if (prevNews.length === 0) {
         window.location.href = "/"
@@ -14,17 +13,14 @@ function hot() {
     let latestNews: any = [];
 
     prevNews.forEach((news:any)=>{
-        // console.log(news);
         for (let index = 0; index < news.length; index++) {
             const element = news[index];
-            console.log(element);
             if (element.date.includes("hrs") || element.date.includes("mins") || element.date.includes("hr") || element.date.includes("min")) {
                 latestNews.push(element)
             }
         }
     })
 
-    console.log(latestNews);
     let moreLatest = latestNews.slice(3, 9);
     const mayAlsoLike = latestNews
     .filter((article:any) => !moreLatest.some((other:any) => other.story === article.story)).slice(9, 13) ;

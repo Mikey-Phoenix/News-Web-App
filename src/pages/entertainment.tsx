@@ -7,6 +7,7 @@ import Footer from "../components/footer"
 import { useEffect, useRef } from "react"
 import { mapArticleToNewsBlock, mapArticleToVideoBlock } from "../utils/mapArticleToNewsBlock"
 import { AlertTrigger } from '../utils/alerts';
+import Skeleton from "react-loading-skeleton";
 
 function entertainment() {
 
@@ -22,9 +23,31 @@ function entertainment() {
     }, []);
 
 
-    if (loading) return <p>Scraping...</p>;
-    if (error) return <p style={{ color: 'red' }}>{error}</p>;
-    if (results.length === 0) return <p>No articles found.</p>;
+    if (loading) return <p>
+                <div className='w-[95%] h-full flex flex-col md:flex-row gap-4 my-10 mx-auto'>
+                    <div className='w-full h-full bg-[#FAFAFA] space-x-4 p-5'>
+                        <Skeleton height={150} width="100%" />
+                        <Skeleton height={70} width="90%" className="mt-2" />
+                        <Skeleton height={50} width="35%" className="mt-2" />
+                    </div>
+                    <div className='w-full bg-[#FAFAFA] space-x-4 mt-4 p-5'>
+                        <Skeleton height={150} width="100%" />
+                        <Skeleton height={70} width="90%" className="mt-2" />
+                        <Skeleton height={50} width="35%" className="mt-2" />
+                    </div>
+                    <div className='w-full h-full bg-[#FAFAFA] space-x-4 p-5'>
+                        <Skeleton height={150} width="100%" />
+                        <Skeleton height={70} width="90%" className="mt-2" />
+                        <Skeleton height={50} width="35%" className="mt-2" />
+                    </div>
+                    <div className='w-full h-full bg-[#FAFAFA] space-x-4 mt-4 p-5'>
+                        <Skeleton height={150} width="100%" />
+                        <Skeleton height={70} width="90%" className="mt-2" />
+                        <Skeleton height={50} width="35%" className="mt-2" />
+                    </div>
+            </div></p>;
+    if (error) return <AlertTrigger show={!!error} title="Please Check Internet Connection" icon="warning" />;
+    if (results.length === 0) return <AlertTrigger show={!!error} title="There was a problem with the Server" icon="error" />;
 
     const filteredResults = results.filter((article:any) => 
         !article.image?.includes('-60x') 
@@ -72,8 +95,6 @@ function entertainment() {
     .filter((article:any) => !moreArticles.some((other:any) => other.title === article.title))
     .slice(0, 4)
 
-    console.log("unique articles")
-    console.log(uniqueArticles)
 
     return (
         <>
