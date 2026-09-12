@@ -4,9 +4,7 @@ import puppeteer, { Browser } from 'puppeteer-core';
 import * as cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
-
-
-const API_URL = process.env.VITE_API_URL
+import chromium from '@sparticuz/chromium';
 
 
 const app = express();
@@ -27,20 +25,31 @@ interface NewsArticle {
 // --- Shared Puppeteer browser (singleton, launched once and reused) ---
 let browserInstance: Browser | null = null;
 
+// const getBrowser = async (): Promise<Browser> => {
+//   if (browserInstance && browserInstance.connected) {
+//     return browserInstance;
+//   }
+//   browserInstance = await puppeteer.launch({
+//     executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+//     // executablePath: API_URL,
+//     headless: 'new' as any,
+//     args: [
+//       '--no-sandbox',
+//       '--disable-setuid-sandbox',
+//       '--disable-dev-shm-usage',
+//       '--disable-gpu',
+//     ],
+//   });
+//   return browserInstance;
+// };
 const getBrowser = async (): Promise<Browser> => {
   if (browserInstance && browserInstance.connected) {
     return browserInstance;
   }
   browserInstance = await puppeteer.launch({
-    // executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    executablePath: API_URL,
-    headless: 'new' as any,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-    ],
+    executablePath: await chromium.executablePath(),
+    headless: true,
+    args: chromium.args,
   });
   return browserInstance;
 };
