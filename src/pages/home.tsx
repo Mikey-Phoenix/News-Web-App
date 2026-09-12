@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useScraper, useSportScraper, useTechScraper, useHealthScraper, useBusinessScraper, useEntertainmentScraper, useVideoScraper } from '../hooks/useScraper'; 
 // , useVideoScraper

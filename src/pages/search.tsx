@@ -1,4 +1,3 @@
-import React, {useState} from 'react';
 import MoreNewsBlock from '../components/morenewsblock';
 import { IoMdSearch } from 'react-icons/io';
 import { IoClose } from "react-icons/io5";

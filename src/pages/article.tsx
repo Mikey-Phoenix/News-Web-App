@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { FaShareAlt } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa6";
