@@ -14,9 +14,6 @@ function article(){
     const [searchParams] = useSearchParams();
     const story = searchParams.get('story');
     const hasRunRef = useRef<string | null>(null);
-    // console.log('====================================');
-    // console.log(story);
-    // console.log('====================================');
 
     const { scrape: scrapeNews, results, loading, error: newsError } = useScraper();
     const { scrape: scrapeSport, results: sportResults, loading: sportLoading } = useSportScraper();
@@ -44,11 +41,7 @@ function article(){
             hasRunRef.current = story;
             if (story) {
                 scrapeArticle(story);
-                console.log('====================================');
-                console.log(story);
-                console.log('====================================');
             }
-            console.log(articleResult)
         }
     }, [story, articleResult]);
 
@@ -90,22 +83,18 @@ function article(){
                 isHot: article.image !== null,  // 👈 true if image exists, false if not
             };
         });
-    console.log("mapped results:", mappedArticles)
     let uniqueArticles = mappedArticles.filter(
         (article, index, self) =>
         index === self.findIndex((a) => a.story === article.story)
     );
-    console.log("unique results:", uniqueArticles)
     const otherArticles = uniqueArticles
     // .filter((article:any) => article.story !== articleResult.story || null)
     // .filter((article:any) => !article.imageUrl?.includes('placeholder'))
     .slice(0, 3);
-    console.log("other results:", otherArticles)
     const shortArticles = uniqueArticles
     // .filter((article:any) => article.story !== firstArticle.story)
     .filter((article:any) => !otherArticles.some((other:any) => other.story === article.story))
     .slice(0, 6);
-    console.log("short results:", shortArticles)
 
 
     function formatArticleDate(isoString: string): string {

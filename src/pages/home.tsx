@@ -139,7 +139,6 @@ function home() {
     const filteredResults = results.filter((article:any) => 
         !article.image?.includes('-60x')
     );
-    console.log(filteredResults)
     const filteredSportResults = sportResults.filter((article:any) =>
         !article.image?.includes('-60x') &&
         article.image !== null &&

@@ -6,6 +6,8 @@ import fs from 'fs';
 import path from 'path';
 
 
+const API_URL = process.env.VITE_API_URL
+
 
 const app = express();
 app.use(cors());
@@ -30,7 +32,8 @@ const getBrowser = async (): Promise<Browser> => {
     return browserInstance;
   }
   browserInstance = await puppeteer.launch({
-    executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+    // executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+    executablePath: API_URL,
     headless: 'new' as any,
     args: [
       '--no-sandbox',

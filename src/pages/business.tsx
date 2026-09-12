@@ -43,8 +43,8 @@ function business() {
                     <Skeleton height={50} width="35%" className="mt-2" />
                 </div>
         </div></p>;
-    if (error) return <p style={{ color: 'red' }}>{error}</p>;
-    if (results.length === 0) return <p>No articles found.</p>;
+    if (error) return <AlertTrigger show={!!error} title="Please Check Internet Connection" icon="warning" />;
+    if (results.length === 0) return <AlertTrigger show={!!error} title="There was a problem with the Server" icon="error" />;
 
     const filteredResults = results.filter((article:any) => 
         !article.image?.includes('-60x') 
@@ -84,8 +84,6 @@ function business() {
     .filter((article:any) => !moreArticles.some((other:any) => other.title === article.title))
     .slice(0, 4)
 
-    console.log("unique articles")
-    console.log(uniqueArticles)
 
     return (
         <>

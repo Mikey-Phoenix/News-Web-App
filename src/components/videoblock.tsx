@@ -15,8 +15,6 @@ function redirectToVideo(story:string){
     const fixedStory = fixArticlePath(story);
     // window.location.href = `/video?story=${encodeURIComponent(fixedStory)}`;
     window.location.replace(fixedStory)
-    console.log(encodeURIComponent(fixedStory));
-    console.log(fixedStory);
 }
 export default function VideoBlock({ url, story, title, date, isWhite }: 
     {url: string, story: string, title: string, date: string, isWhite: boolean}) {

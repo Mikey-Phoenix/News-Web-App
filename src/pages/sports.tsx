@@ -77,11 +77,6 @@ function sports() {
     .filter((article:any) => !moreArticles.some((other:any) => other.title === article.title))
     .slice(0, 4)
 
-    console.log("more articles")
-    console.log(moreArticles)
-    // console.log(mappedArticles)
-    console.log("unique articles")
-    console.log(uniqueArticles)
 
     return (
         <>
