@@ -32,7 +32,7 @@ const getBrowser = async (): Promise<Browser> => {
   }
   browserInstance = await puppeteer.launch({
     // executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-    executablePath: varPath,
+    executablePath: VITE_API_URL,
     headless: 'new' as any,
     args: [
       '--no-sandbox',
