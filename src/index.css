@@ -20,3 +20,10 @@ body {
 nav, #logo, #footer {
     font-family: "Google Sans Flex", sans-serif;
 }
+
+@media (max-width: 768px) {
+    nav > img {
+        width: 150px;
+    }
+    
+}
