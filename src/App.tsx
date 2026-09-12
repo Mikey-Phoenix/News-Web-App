@@ -117,7 +117,7 @@ function Navbar() {
                 <IoMdSearch className="absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md" onClick={()=>{window.location.href = "/search"}} />
               </div>
               {/* <div className="text-3xl md:text-5xl font-bold">Logo</div> */}
-              <img src={logo} alt="Brand Name" width="400px" />
+              <img src={logo} alt="Brand Name" width="200px" />
 
               {/* Hamburger — opens mobile menu */}
               <div

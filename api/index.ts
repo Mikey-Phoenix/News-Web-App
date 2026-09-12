@@ -75,8 +75,8 @@ const getPageHTML = async (url: string, waitFor?: string): Promise<string> => {
   const page = await browser.newPage();
   try {
     // Override default 60s timeout
-    page.setDefaultNavigationTimeout(120000);
-    page.setDefaultTimeout(120000);
+    page.setDefaultNavigationTimeout(300000);
+    page.setDefaultTimeout(300000);
 
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36');
     await page.setExtraHTTPHeaders({ 'Accept-Language': 'en-US,en;q=0.9' });
@@ -99,7 +99,7 @@ const getPageHTML = async (url: string, waitFor?: string): Promise<string> => {
       }
     });
 
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 300000 });
     console.log('Navigating to:', url);
     if (waitFor) {
       await page.waitForSelector(waitFor, { timeout: 10000 }).catch(() => {

@@ -48,7 +48,7 @@ export const useScraper = () => {
     try {
       const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape`, {
         params: { url },
-        timeout: 120000,
+        timeout: 300000,
       });
       setResults(data.data);
     } catch (error: any) {
@@ -74,7 +74,7 @@ export const useSportScraper = () => {
     try {
       const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape-sport`, {
         params: { url },
-        timeout: 120000,
+        timeout: 300000,
       });
       setResults(data.data);
     } catch (error: any) {
@@ -100,7 +100,7 @@ export const useTechScraper = () => {
     try {
       const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape-tech`, {
         params: { url },
-        timeout: 120000,
+        timeout: 300000,
       });
       setResults(data.data);
     } catch (error: any) {
@@ -126,7 +126,7 @@ export const useHealthScraper = () => {
     try {
       const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape-health`, {
         params: { url },
-        timeout: 120000,
+        timeout: 300000,
       });
       setResults(data.data);
     } catch (error: any) {
@@ -152,7 +152,7 @@ export const useBusinessScraper = () => {
     try {
       const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape-business`, {
         params: { url },
-        timeout: 120000,
+        timeout: 300000,
       });
       setResults(data.data);
     } catch (error: any) {
@@ -178,7 +178,7 @@ export const useEntertainmentScraper = () => {
     try {
       const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape-entertainment`, {
         params: { url },
-        timeout: 120000,
+        timeout: 300000,
       });
       setResults(data.data);
     } catch (error: any) {
@@ -205,7 +205,7 @@ export const useArticleScraper = () => {
     try {
       const { data } = await axios.get<{ success: boolean; data: NewsArticle }>(
         `${API_URL}/api/scrape-article`,
-        { params: { url }, timeout: 120000 }
+        { params: { url }, timeout: 300000 }
       );
       if (requestId === requestIdRef.current) {
         setResult(data.data);
@@ -237,7 +237,7 @@ export const useVideoScraper = () => {
     try {
       const { data } = await axios.get<ScrapeResponse>(`${API_URL}/api/scrape-video`, {
         params: { url },
-        timeout: 120000,
+        timeout: 300000,
       });
       setResults(data.data);
     } catch (error: any) {
