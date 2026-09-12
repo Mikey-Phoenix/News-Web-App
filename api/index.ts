@@ -705,5 +705,5 @@ export const config = {
   maxDuration: 300,
 };
 
-// app.listen(4000, () => console.log('Scraper server running on port 4000'));
-export default app;
+app.listen(4000, () => console.log('Scraper server running on port 4000'));
+// export default app;
