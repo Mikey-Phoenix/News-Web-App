@@ -1,11 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import puppeteer, { Browser } from 'puppeteer-core';
 import * as cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
-import chromium from '@sparticuz/chromium';
-
+// import { getBrowser } from '../src/modules/browser';
+import { getBrowser } from '../src/modules/browser';
 
 const app = express();
 app.use(cors());
@@ -21,44 +20,6 @@ interface NewsArticle {
   author?: string | null;
   body?: string | null;
 }
-
-// --- Shared Puppeteer browser (singleton, launched once and reused) ---
-let browserInstance: Browser | null = null;
-
-// const getBrowser = async (): Promise<Browser> => {
-//   if (browserInstance && browserInstance.connected) {
-//     return browserInstance;
-//   }
-//   browserInstance = await puppeteer.launch({
-//     executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-//     // executablePath: API_URL,
-//     headless: 'new' as any,
-//     args: [
-//       '--no-sandbox',
-//       '--disable-setuid-sandbox',
-//       '--disable-dev-shm-usage',
-//       '--disable-gpu',
-//     ],
-//   });
-//   return browserInstance;
-// };
-const getBrowser = async (): Promise<Browser> => {
-  if (browserInstance && browserInstance.connected) {
-    return browserInstance;
-  }
-  browserInstance = await puppeteer.launch({
-    executablePath: await chromium.executablePath(),
-    headless: true,
-    args: chromium.args,
-  });
-  return browserInstance;
-};
-
-// Clean shutdown on exit
-process.on('SIGINT', async () => {
-  if (browserInstance) await browserInstance.close();
-  process.exit(0);
-});
 
 // Prevent the whole server from crashing on stray unhandled errors —
 // log them instead so a single bad request can't take everything down.
