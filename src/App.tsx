@@ -149,7 +149,7 @@ function Navbar() {
 
         {/* Mobile menu - slides in from the right */}
         {isOn ? (   // ✅ isOn is now defined
-          <div className="absolute top-0 right-0 w-[100vw] h-[100vh] p-10 flex flex-col bg-[var(--primary)]">
+          <div className="absolute top-0 right-0 w-[100vw] h-[100vh] py-10 px-5 flex flex-col bg-[var(--primary)]">
             <div className="flex justify-between items-center mb-5">
               {mobileSearch && (
                 // <div className="w-full mr-2 text-3xl font-bold">Logo</div>
@@ -192,7 +192,7 @@ function Navbar() {
             </div>
 
             <div className="w-fit absolute bottom-10">
-              <div className="text-3xl font-bold">Logo</div>
+              <img src={logo} alt="Brand Name" width="300px" />
               <div className="flex items-center justify-between mt-3 space-x-6 text-base">
                 <FaInstagram className="text-2xl cursor-pointer hover:text-[var(--secondary)]" />
                 <FaFacebook className="text-2xl cursor-pointer hover:text-[var(--secondary)]" />
@@ -206,7 +206,7 @@ function Navbar() {
           <div className="absolute top-0 -right-[100vw] w-[100vw] h-[100vh] p-10 flex flex-col bg-[var(--primary)]">
             <div className="flex justify-between items-center mb-5">
               {mobileSearch && (
-                <div className="w-full mr-2 text-3xl font-bold">Logo</div>
+                <img src={logo} alt="Brand Name" width="200px" />
               )}
               <div className="flex justify-end space-x-4 w-full">
                 {!mobileSearch ? (
