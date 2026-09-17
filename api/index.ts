@@ -4,7 +4,7 @@ import * as cheerio from 'cheerio';
 import fs from 'fs';
 import path from 'path';
 // import { getBrowser } from '../src/modules/browser';
-import { getBrowser } from '../src/modules/browser';
+import { getBrowser } from '../src/modules/browser.ts';
 
 const app = express();
 app.use(cors());
