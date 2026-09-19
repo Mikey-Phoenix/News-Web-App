@@ -87,34 +87,34 @@ function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-between bg-[var(--primary)] text-white">
+      <nav className="fixed top-0 left-0 w-full z-50 flex flex-col items-center justify-between bg-(--primary) text-white">
 
         <a href="https://weather-app-u32l.vercel.app/" className="hidden"></a>
         {/* Top section - slides up when scrolled */}
 
         {screenSize ? (
-          <div className={`w-full flex justify-between items-center space-x-4 px-4 overflow-hidden transition-all duration-300 ease-in-out ${scrolled ? 'max-h-0 py-0 opacity-0' : 'max-h-24 py-4 opacity-100'}`}>
+          <div className={`w-full flex justify-between items-center space-x-4 px-4 overflow-hidden transition-all duration-300 ease-in-out ${scrolled ? 'max-h-0 py-0 opacity-0' : 'max-hmd:max-h-24 py-4 opacity-100'}`}>
             <div className="hidden md:block relative">
-              <input className='border border-2 rounded-md p-2 border-[var(--tertiary)]' type="search" placeholder="Search..." onChange={(e) => setSearchTerm(e.target.value)}/>
-              <IoMdSearch className="absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md" onClick={()=>{window.location.href = "/search"}} />
+              <input className='border-2 rounded-md p-2 border-(--tertiary)' type="search" placeholder="Search..." onChange={(e) => setSearchTerm(e.target.value)}/>
+              <IoMdSearch className="absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-(--tertiary) rounded-md" onClick={()=>{window.location.href = "/search"}} />
             </div>
             {/* <div className="text-3xl md:text-5xl font-bold">Logo</div> */}
             <img src={logo} alt="Brand Name" width="200px"/>
             {/* Hamburger — opens mobile menu */}
             <div
               onClick={toggle}   // ✅ wired to toggle
-              className="md:hidden bg-[var(--tertiary)] rounded-sm text-2xl p-3 cursor-pointer hover:bg-[var(--tertiary-light)]"
+              className="md:hidden bg-(--tertiary) rounded-sm text-2xl p-1 cursor-pointer hover:bg-(--tertiary-light)"
             >
               <RxHamburgerMenu />
             </div>
 
-            <div className="hidden md:block bg-[var(--tertiary)] cursor-pointer p-2 rounded-md hover:bg-[var(--tertiary-light)]">Subscribe to newsletter</div>
+            <div className="hidden md:block bg-(--tertiary) cursor-pointer p-2 rounded-md hover:bg-(--tertiary-light)">Subscribe to newsletter</div>
           </div>
           ) : (
-            <div className={`w-full flex justify-between items-center space-x-4 px-4 overflow-hidden transition-all duration-300 ease-in-out max-h-24 py-4 opacity-100`}>
+            <div className={`w-full flex justify-between items-center space-x-4 px-4 overflow-hidden transition-all duration-300 ease-in-out max-h-24 py-2 opacity-100`}>
               <div className="hidden md:block relative">
-                <input className='border border-2 rounded-md p-2 border-[var(--tertiary)]' type="search" placeholder="Search..." onChange={(e) => setSearchTerm(e.target.value)}/>
-                <IoMdSearch className="absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md" onClick={()=>{window.location.href = "/search"}} />
+                <input className='border border-2 rounded-md p-2 border-(--tertiary)' type="search" placeholder="Search..." onChange={(e) => setSearchTerm(e.target.value)}/>
+                <IoMdSearch className="absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-(--tertiary) rounded-md" onClick={()=>{window.location.href = "/search"}} />
               </div>
               {/* <div className="text-3xl md:text-5xl font-bold">Logo</div> */}
               <img src={logo} alt="Brand Name" width="200px" />
@@ -122,12 +122,12 @@ function Navbar() {
               {/* Hamburger — opens mobile menu */}
               <div
                 onClick={toggle}   // ✅ wired to toggle
-                className="md:hidden bg-[var(--tertiary)] rounded-sm text-2xl p-3 cursor-pointer hover:bg-[var(--tertiary-light)]"
+                className="md:hidden bg-(--tertiary) rounded-sm text-xl p-2 cursor-pointer hover:bg-(--tertiary-light)"
               >
                 <RxHamburgerMenu />
               </div>
 
-              <div className="hidden md:block bg-[var(--tertiary)] cursor-pointer p-2 rounded-md hover:bg-[var(--tertiary-light)]">Subscribe to newsletter</div>
+              <div className="hidden md:block bg-(--tertiary) cursor-pointer p-2 rounded-md hover:bg-(--tertiary-light)">Subscribe to newsletter</div>
             </div>
           )}
 
@@ -138,7 +138,7 @@ function Navbar() {
               key={link.to}
               to={link.to}
               className={location.pathname === link.to
-                ? 'py-2 px-4 bg-[var(--tertiary)]'
+                ? 'py-2 px-4 bg-(--tertiary)'
                 : 'text-white py-2 px-4 hover:text-[var(--secondary)]'
               }
             >
@@ -149,7 +149,7 @@ function Navbar() {
 
         {/* Mobile menu - slides in from the right */}
         {isOn ? (   // ✅ isOn is now defined
-          <div className="absolute top-0 right-0 w-[100vw] h-[100vh] py-10 px-5 flex flex-col bg-[var(--primary)]">
+          <div className="absolute top-0 right-0 w-[100vw] h-[100vh] py-10 px-5 flex flex-col bg-(--primary)">
             <div className="flex justify-between items-center mb-5">
               {mobileSearch && (
                 // <div className="w-full mr-2 text-3xl font-bold">Logo</div>
@@ -157,19 +157,19 @@ function Navbar() {
               )}
               <div className="flex justify-end space-x-4 w-full">
                   {!mobileSearch ? (
-                    <div className="relative w-full md:hidden flex rounded-sm cursor-pointer border border-2 rounded-md border-[var(--tertiary)]" >
+                    <div className="relative w-full md:hidden flex cursor-pointer border-2 rounded-md border-(--tertiary)" >
                         <input className='  px-2 ' type="search" placeholder="Search..." onChange={(e) => setSearchTerm(e.target.value)} />
-                        <IoMdSearch className='absolute top-[50%] right-0 w-[20%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md' onClick={()=>{window.location.href = "/search"}} />
+                        <IoMdSearch className='absolute top-[50%] right-0 w-[20%] h-full py-2 cursor-pointer translate-y-[-50%] bg-(--tertiary) rounded-md' onClick={()=>{window.location.href = "/search"}} />
                     </div>
                   ) : (
                     <div className="md:hidden flex rounded-sm cursor-pointer text-2xl " onClick={searchBar}>
-                        <IoMdSearch className='w-full h-full p-3 cursor-pointer bg-[var(--tertiary)] rounded-md' />
+                        <IoMdSearch className='w-full h-full p-3 cursor-pointer bg-(--tertiary) rounded-md' />
                     </div>
                   )}
                 {/* Close button — closes mobile menu */}
                 <div
                   onClick={toggle}   // ✅ wired to toggle
-                  className="md:hidden bg-[var(--tertiary)] rounded-sm text-2xl p-3 cursor-pointer hover:bg-[var(--tertiary-light)]"
+                  className="md:hidden bg-(--tertiary) rounded-sm text-2xl p-3 cursor-pointer hover:bg-(--tertiary-light)"
                 >
                   <IoClose />
                 </div>
@@ -183,7 +183,7 @@ function Navbar() {
                   to={link.to}
                   onClick={toggle}   // ✅ closes menu on nav
                   className={location.pathname === link.to
-                    ? 'flex items-center h-10 pl-2 bg-[var(--tertiary)] w-full'
+                    ? 'flex items-center h-10 pl-2 bg-(--tertiary) w-full'
                     : 'text-white flex items-center h-10 pl-2 hover:text-[var(--secondary)] w-full'
                   }>
                   {link.label}
@@ -203,7 +203,7 @@ function Navbar() {
             </div>
           </div>
         ) : (
-          <div className="absolute top-0 -right-[100vw] w-[100vw] h-[100vh] p-10 flex flex-col bg-[var(--primary)]">
+          <div className="absolute top-0 -right-[100vw] w-[100vw] h-[100vh] p-10 flex flex-col bg-(--primary)">
             <div className="flex justify-between items-center mb-5">
               {mobileSearch && (
                 <img src={logo} alt="Brand Name" width="200px" />
@@ -211,18 +211,18 @@ function Navbar() {
               <div className="flex justify-end space-x-4 w-full">
                 {!mobileSearch ? (
                     <div className="relative md:hidden flex rounded-sm cursor-pointer " onClick={searchBar}>
-                        <input className='border border-2 rounded-md px-2 border-[var(--tertiary)]' type="search" placeholder="Search..." />
-                        <IoMdSearch className='absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-[var(--tertiary)] rounded-md' />
+                        <input className='border border-2 rounded-md px-2 border-(--tertiary)' type="search" placeholder="Search..." />
+                        <IoMdSearch className='absolute top-[50%] right-0 w-[30%] h-full py-2 cursor-pointer translate-y-[-50%] bg-(--tertiary) rounded-md' />
                     </div>
                 ) : (
                   <div className="md:hidden flex rounded-sm cursor-pointer text-2xl " onClick={searchBar}>
-                      <IoMdSearch className='w-full h-full p-3 cursor-pointer bg-[var(--tertiary)] rounded-md' />
+                      <IoMdSearch className='w-full h-full p-3 cursor-pointer bg-(--tertiary) rounded-md' />
                   </div>
                 )}
                 {/* Close button — closes mobile menu */}
                 <div
                   onClick={toggle}   // ✅ wired to toggle
-                  className="md:hidden bg-[var(--tertiary)] rounded-sm text-2xl p-3 cursor-pointer hover:bg-[var(--tertiary-light)]"
+                  className="md:hidden bg-(--tertiary) rounded-sm text-2xl p-3 cursor-pointer hover:bg-(--tertiary-light)"
                 >
                   <IoClose />
                 </div>
@@ -236,7 +236,7 @@ function Navbar() {
                   to={link.to}
                   onClick={toggle}   // ✅ closes menu on nav
                   className={location.pathname === link.to
-                    ? 'flex items-center h-10 pl-2 bg-[var(--tertiary)] w-full'
+                    ? 'flex items-center h-10 pl-2 bg-(--tertiary) w-full'
                     : 'text-white flex items-center h-10 pl-2 hover:text-[var(--secondary)] w-full'
                   }>
                   {link.label}

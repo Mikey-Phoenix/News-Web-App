@@ -32,7 +32,7 @@ export default function VideoBlock({ url, story, title, date, isWhite }:
                     </div>
                 </div>
             ):(
-                <div className="w-48 h-[95%] md:h-[95%] ml-5 flex flex-col justify-between bg-[var(--tertiary)] rounded-md hover:cursor-pointer">
+                <div className="w-48 h-[95%] md:h-[95%] ml-5 flex flex-col justify-between bg-(--tertiary) rounded-md hover:cursor-pointer">
                     <div className="relative h-[70%]" onClick={() => redirectToVideo(story)}>
                         <img src={url} alt={title} className="w-full bg-gray-400 h-full object-cover rounded-md"/>
                         <FaRegCirclePlay className="absolute top-1/2 left-1/2 text-6xl -translate-1/2 text-white"/>

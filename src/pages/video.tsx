@@ -13,7 +13,7 @@ function Video() {
     window.location.replace('/');
 
   return (
-    <div className='mt-[-25px] bg-[var(--tertiary)] '>
+    <div className='mt-[-25px] bg-(--tertiary) '>
         <div className='min-h-[50vh]'>
             <h1 className='text-lg md:text-4xl text-white font-bold w-fit mx-auto pt-7'>Video</h1>
             <div className='flex w-[90vw] h-[80vh] mx-auto mt-5'>
@@ -52,7 +52,7 @@ function Video() {
                 </div>
             </div>
 
-             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="text-white md:text-xl bg-[var(--tertiary)]">More Videos <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
+             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="text-white md:text-xl bg-(--tertiary)">More Videos <FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
              <div className="my-5 w-[93vw] md:w-[90vw] mx-auto h-[60vh] max-h-[300px] lg:max-h-[600px] rounded-md overflow-x-auto overflow-y-hidden ">
                 <div className="h-full w-max mt-5 px-8 md:px-16 py-4 flex">

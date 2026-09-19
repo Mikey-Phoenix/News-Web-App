@@ -10,7 +10,7 @@ import logo from "../assets/footer_logo.png";
 export default function Footer () {
     return (
         <>
-            <div id="footer" className="w-full mt-24 md:mt-48 py-6 px-3 md:px-10 bg-[var(--tertiary)] text-white">
+            <div id="footer" className="w-full mt-24 md:mt-48 py-6 px-3 md:px-10 bg-(--tertiary) text-white">
                 {/* <h1 className="text-3xl md:text-5xl font-bold">Logo</h1> */}
                 <img src={logo} alt="Brand Name" width="300px" />
                 <div className="grid grid-cols-3 gap-y-3 lg:flex justify-between lg:w-[50%] mt-5">
@@ -25,7 +25,7 @@ export default function Footer () {
                     <a href="/weather" className="hover:text-[var(--secondary)]">Weather</a>
                 </div>
                 <div className="flex flex-row md:flex-col justify-between mt-5 md:mt-0">
-                    <div className="bg-[var(--primary)] w-fit mt-5 md:mt-3 cursor-pointer p-2 rounded-md hover:bg-[var(--tertiary-light)] text-sm">Subscribe to newsletter</div>
+                    <div className="bg-(--primary) w-fit mt-5 md:mt-3 cursor-pointer p-2 rounded-md hover:bg-(--tertiary-light) text-sm">Subscribe to newsletter</div>
                     <div className="flex flex-col md:flex-row items-center justify-between mt-3 w-[50%] lg:w-[30%] text-base"><span className="w-full text-center md:text-left">Follow Logo on:</span>
                         <div className="flex justify-evenly w-full">
                             <FaInstagram className="text-lg md:text-2xl cursor-pointer hover:text-[var(--secondary)]" onClick={() => redirect("/")}/>

@@ -394,12 +394,12 @@ function home() {
                 </div>
             )}
 
-            {/* <button className="bg-[var(--tertiary)] cursor-pointer ml-4 mb-3 p-2 rounded-md hover:bg-[var(--tertiary-light)] text-white">View More</button> */}
+            {/* <button className="bg-(--tertiary) cursor-pointer ml-4 mb-3 p-2 rounded-md hover:bg-(--tertiary-light) text-white">View More</button> */}
 
 
             {/* <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Weather<FaAngleRight className="inline text-[var(--secondary)]" /></span></div> */}
 
-            {/* <div className="my-5 w-[90vw] mx-auto lg:h-[100vh] bg-[var(--tertiary)]">
+            {/* <div className="my-5 w-[90vw] mx-auto lg:h-[100vh] bg-(--tertiary)">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-5 text-xs">
                     <div className="w-full h-[45vh] max-h-[200px] lg:max-h-full bg-gray-400 relative">
                         <div className="absolute bottom-0 flex justify-evenly w-full text-white">
