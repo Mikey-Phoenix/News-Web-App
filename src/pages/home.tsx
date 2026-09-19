@@ -373,11 +373,11 @@ function home() {
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Sports<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             {(!usingCache && sportLoading) || !firstSportArticle ? (
-                <div className="flex flex-col md:flex-row px-5 md:px-10 pt-3">
+                <div className="flex flex-col md:flex-row px-2 md:px-10 pt-3">
                     <Skeleton height={250} width="100%" />
                 </div>
             ) : (
-                <div className="flex flex-col md:flex-row px-5 md:px-10 pt-3">
+                <div className="flex flex-col md:flex-row px-1 md:px-10 pt-3">
                     <div className="w-full mx-2 border-r border-gray-400">
                         <NewsBlock title={firstSportArticle.title} description={firstSportArticle.description} imageUrl={firstSportArticle.imageUrl} story={firstSportArticle.story} isHot={firstSportArticle.isHot} isBig={firstSportArticle.isBig} date={firstSportArticle.date} location={firstSportArticle.location}/>
                     </div>
@@ -397,9 +397,9 @@ function home() {
             {/* <button className="bg-[var(--tertiary)] cursor-pointer ml-4 mb-3 p-2 rounded-md hover:bg-[var(--tertiary-light)] text-white">View More</button> */}
 
 
-            <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Weather<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
+            {/* <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Weather<FaAngleRight className="inline text-[var(--secondary)]" /></span></div> */}
 
-            <div className="my-5 w-[90vw] mx-auto lg:h-[100vh] bg-[var(--tertiary)]">
+            {/* <div className="my-5 w-[90vw] mx-auto lg:h-[100vh] bg-[var(--tertiary)]">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-5 text-xs">
                     <div className="w-full h-[45vh] max-h-[200px] lg:max-h-full bg-gray-400 relative">
                         <div className="absolute bottom-0 flex justify-evenly w-full text-white">
@@ -434,7 +434,7 @@ function home() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
 
 
@@ -442,11 +442,11 @@ function home() {
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Technology<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
             {(!usingCache && techLoading) || !firstTechArticle ? (
-                <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 justify-evenly w-[90vw] mx-auto">
+                <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 justify-evenly w-[90vw] px-1 md:px-10 mx-auto">
                     <Skeleton height={200} width="100%" />
                 </div>
             ) : (
-                <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 justify-evenly w-[90vw] mx-auto">
+                <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 justify-evenly w-[90vw] px-1 md:px-10 mx-auto">
                     {otherTechArticles.map((article:any, index:number) => (
                         <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={true} isBig={false} date={article.date} location={article.location}/>
                     ))}
@@ -457,7 +457,7 @@ function home() {
 
             <div className="h-5 mx-5 md:mx-10 md:my-10 my-5 border-b-2 border-[var(--secondary)]"><span className="bg-white md:text-xl text-[var(--tertiary)]">Politics<FaAngleRight className="inline text-[var(--secondary)]" /></span></div>
 
-            <div className="flex md:flex-row flex-col p-5 md:p-10">
+            <div className="flex md:flex-row flex-col p-1 md:p-10">
                 <div className="w-full grid grid-cols-3">
                     <div className="border-r border-gray-400 h-fit">
                         {shortArticles.map((article:any, index:number) => (
@@ -491,7 +491,7 @@ function home() {
                     <Skeleton height={200} width="100%" />
                 </div>
             ) : (
-                <div className="flex flex-col md:grid md:grid-cols-1 lg:grid-cols-2 justify-evenly p-5 md:p-10">
+                <div className="flex flex-col md:grid md:grid-cols-1 lg:grid-cols-2 justify-evenly p-1 md:p-10">
                     {otherHealthArticles.map((article:any, index:number) => (
                         <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={true} isBig={true} date={article.date} location={article.location}/>
                     ))}
@@ -507,7 +507,7 @@ function home() {
                     <Skeleton height={200} width="100%" />
                 </div>
             ) : (
-                <div className="w-[90vw] mx-auto grid grid-cols-3 gap-5">
+                <div className="md:w-[90vw] px-1 md:px-10 mx-auto grid grid-cols-3 md:gap-5">
                     <div className="border-r border-gray-400">
                         {businessArticlesOne.map((article:any, index:number) => (
                             <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
@@ -537,7 +537,7 @@ function home() {
                     <Skeleton height={200} width="100%" />
                 </div>
             ) : (
-                <div className="w-[90vw] mx-auto mt-4 mb-5 grid grid-cols-3 gap-5">
+                <div className="md:w-[90vw] mx-auto mt-4 mb-5 px-1 md:px-10 grid grid-cols-3 md:gap-5">
                     {uniqueEntertainmentArticles.slice(0, 3).map((article:any, index:number) => (
                         <NewsBlock key={index} title={article.title} description={article.description} imageUrl={article.imageUrl} story={article.story} isHot={false} isBig={false} date={article.date} location={article.location}/>
                     ))}

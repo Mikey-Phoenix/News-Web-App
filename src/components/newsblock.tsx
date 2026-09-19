@@ -27,7 +27,7 @@ export default function NewsBlock({ title, description, imageUrl, story, isHot, 
                     {isHot && (
                             <img src={imageUrl} alt={title} className="w-full bg-gray-400 h-72 object-cover" />
                         )}
-                        <div className="p-4">
+                        <div className="p-1 md:p-4">
                             <h2 className="text-2xl md:text-3xl font-bold mb-2">{title}</h2>
                             <p className="text-gray-700 text-sm md:text-base">{description}</p>
                         </div>
@@ -39,10 +39,10 @@ export default function NewsBlock({ title, description, imageUrl, story, isHot, 
                         {isHot && (
                             <img src={imageUrl} alt={title} className="w-[50%] md:w-full h-28 bg-gray-400 object-cover" />
                         )}
-                        <div className="p-4 w-full ">
-                            <h2 className="text-lg font-bold mb-2">{title}</h2>
+                        <div className="p-2 md:p-4 w-full ">
+                            <h2 className="text-sm md:text-lg font-bold mb-2">{title}</h2>
                             {isHot && (
-                                <p className="text-gray-700 text-sm md:text-base">{description}</p>
+                                <p className="text-gray-700 text-xs md:text-base">{description}</p>
                             )}
                         <div className="text-gray-400 md:pl-4 pb-1 w-full text-sm">{date} | {location}</div>
                         </div>
